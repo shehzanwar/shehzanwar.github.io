@@ -1,0 +1,108 @@
+---
+// src/pages/writing/[slug].astro
+import PageLayout from '../../layouts/PageLayout.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { buildMeta } from '../../lib/seo';
+import { formatDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const writing = await getCollection('writing');
+  return writing.map(entry => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props { entry: CollectionEntry<'writing'> }
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const meta = buildMeta({
+  title: entry.data.title,
+  description: entry.data.excerpt,
+  publishedAt: entry.data.publishedAt,
+});
+---
+
+<PageLayout meta={meta}>
+  <div class="page-section article-page">
+    <a href="/writing" class="back-link">← All writing</a>
+
+    <article>
+      <header class="article-header">
+        <div class="article-meta">
+          <time datetime={entry.data.publishedAt.toISOString()}>
+            {formatDate(entry.data.publishedAt)}
+          </time>
+          <span aria-hidden="true">·</span>
+          <span>{entry.data.readingTime} min read</span>
+        </div>
+
+        <h1 class="article-title">{entry.data.title}</h1>
+        <p class="article-excerpt">{entry.data.excerpt}</p>
+
+        <div class="article-tags">
+          {entry.data.tags.map(t => <span class="tag">{t}</span>)}
+        </div>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+</PageLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .back-link:hover { color: var(--color-text-primary); }
+
+  .article-header {
+    max-width: 72ch;
+    margin-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-bottom: 1rem;
+  }
+
+  .article-title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin-bottom: 1rem;
+  }
+
+  .article-excerpt {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: 1.25rem;
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+</style>

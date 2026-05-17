@@ -1,0 +1,73 @@
+{
+  "$ref": "#/definitions/writing",
+  "definitions": {
+    "writing": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120
+        },
+        "slug": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "errorMessage": {
+            "pattern": "slug must be lowercase kebab-case"
+          }
+        },
+        "excerpt": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 300
+        },
+        "publishedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "readingTime": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 60
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "slug",
+        "excerpt",
+        "publishedAt",
+        "readingTime",
+        "tags"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

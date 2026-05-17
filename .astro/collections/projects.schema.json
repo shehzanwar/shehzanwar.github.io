@@ -1,0 +1,112 @@
+{
+  "$ref": "#/definitions/projects",
+  "definitions": {
+    "projects": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80
+        },
+        "slug": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 80,
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "errorMessage": {
+            "pattern": "slug must be lowercase kebab-case"
+          }
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 20,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "engineer",
+            "analyst",
+            "researcher",
+            "lead"
+          ]
+        },
+        "stack": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "minItems": 1,
+          "maxItems": 12
+        },
+        "repoUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "liveUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "coverIcon": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*(:[a-z0-9][a-z0-9-]*)?$",
+          "errorMessage": {
+            "pattern": "coverIcon must be a valid astro-icon ref (e.g. lucide:chart-bar)"
+          }
+        },
+        "featured": {
+          "type": "boolean"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "publishedAt": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "shipped",
+            "in-progress",
+            "archived"
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "slug",
+        "summary",
+        "description",
+        "role",
+        "stack",
+        "featured",
+        "order",
+        "publishedAt",
+        "status"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

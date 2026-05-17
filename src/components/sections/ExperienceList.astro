@@ -1,0 +1,136 @@
+---
+// src/components/sections/ExperienceList.astro
+import type { CollectionEntry } from 'astro:content';
+import { formatDateRange } from '../../lib/format';
+
+interface Props {
+  entries: CollectionEntry<'experience'>[];
+}
+
+const { entries } = Astro.props;
+---
+
+<ol class="experience-list" role="list">
+  {entries.map(entry => (
+    <li class="exp-entry">
+      <div class="exp-meta">
+        <time class="exp-dates">
+          {formatDateRange(entry.data.start, entry.data.end ?? null)}
+        </time>
+        <span class="exp-location">{entry.data.location}</span>
+      </div>
+
+      <article class="exp-content">
+        <h3 class="exp-role">{entry.data.role}</h3>
+        <p class="exp-company">{entry.data.company}</p>
+
+        <ul class="exp-highlights" role="list">
+          {entry.data.highlights.map(h => (
+            <li class="highlight">{h}</li>
+          ))}
+        </ul>
+
+        <div class="exp-skills">
+          {entry.data.skills.slice(0, 8).map(s => (
+            <span class="chip">{s}</span>
+          ))}
+        </div>
+      </article>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .experience-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .exp-entry {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: 2rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .exp-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .exp-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  .exp-dates {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .exp-location {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  .exp-role {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .exp-company {
+    font-size: var(--text-base);
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+  }
+
+  .exp-highlights {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .highlight {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .highlight::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .exp-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  @media (max-width: 768px) {
+    .exp-entry {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+  }
+</style>

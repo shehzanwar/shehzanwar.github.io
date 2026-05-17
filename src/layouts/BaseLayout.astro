@@ -1,0 +1,65 @@
+---
+// src/layouts/BaseLayout.astro
+import '../styles/global.css';
+import type { MetaOutput } from '../lib/seo';
+
+interface Props {
+  meta: MetaOutput;
+  lang?: string;
+}
+
+const { meta, lang = 'en' } = Astro.props;
+const canonical = meta.canonical ?? Astro.url.href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={meta.description} />
+
+    <!-- Critical: must render before any paint to prevent FOUC -->
+    <style>html { color-scheme: light dark; }</style>
+
+    <!-- Theme detection: runs synchronously before first paint -->
+    <script is:inline>
+      (function () {
+        var stored = null;
+        try { stored = localStorage.getItem('theme'); } catch (_) {}
+        var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+        document.documentElement.dataset.theme = stored || preferred;
+      })();
+    </script>
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonical} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content={meta.ogType} />
+    <meta property="og:title"       content={meta.ogTitle} />
+    <meta property="og:description" content={meta.ogDescription} />
+    <meta property="og:url"         content={canonical} />
+    {meta.ogImage && <meta property="og:image" content={meta.ogImage} />}
+    {meta.articlePublishedTime && (
+      <meta property="article:published_time" content={meta.articlePublishedTime} />
+    )}
+
+    <!-- Favicons (assets provided in Pathway F) -->
+    <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon"             type="image/x-icon"  href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Theme color — approximate hex of our oklch tokens -->
+    <meta name="theme-color" content="#f7f5f1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#191b24" media="(prefers-color-scheme: dark)" />
+
+    <title>{meta.title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

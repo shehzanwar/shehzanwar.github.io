@@ -1,0 +1,30 @@
+---
+// src/pages/index.astro — M11 order: Hero → BentoGrid → RecentWriting
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import FeaturedProjects from '../components/sections/FeaturedProjects.astro';
+import RecentWriting from '../components/sections/RecentWriting.astro';
+import { getCollection } from 'astro:content';
+import { buildMeta } from '../lib/seo';
+
+const meta = buildMeta({
+  title: 'Shehzan Warraich — Data Analyst & OMSA Candidate',
+  description:
+    'Data analyst and Georgia Tech OMSA candidate building forecasting models, analytics pipelines, and the tools that surface them.',
+});
+
+const [allProjects, allWriting] = await Promise.all([
+  getCollection('projects'),
+  getCollection('writing'),
+]);
+
+const recentWriting = allWriting
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+  .slice(0, 3);
+---
+
+<PageLayout meta={meta}>
+  <Hero />
+  <FeaturedProjects projects={allProjects} />
+  <RecentWriting writing={recentWriting} />
+</PageLayout>

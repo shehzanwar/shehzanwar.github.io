@@ -1,0 +1,174 @@
+---
+// src/components/sections/ProjectDetail.astro
+import type { CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import { formatDate } from '../../lib/format';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+}
+
+const { entry } = Astro.props;
+
+const statusLabel: Record<string, string> = {
+  shipped: 'Shipped',
+  'in-progress': 'In progress',
+  archived: 'Archived',
+};
+---
+
+<header class="project-header">
+  <div class="project-meta-row">
+    {entry.data.coverIcon && (
+      <span class="project-icon">
+        <Icon name={entry.data.coverIcon} size={24} />
+      </span>
+    )}
+    <span class={`status-badge status-badge--${entry.data.status}`}>
+      {statusLabel[entry.data.status] ?? entry.data.status}
+    </span>
+    <time class="project-date">{formatDate(entry.data.publishedAt)}</time>
+  </div>
+  <h1 class="project-title">{entry.data.title}</h1>
+  <p class="project-summary">{entry.data.summary}</p>
+</header>
+
+<div class="project-body">
+  <!-- Rendered markdown content injected by the page -->
+  <div class="project-content prose">
+    <slot />
+  </div>
+
+  <aside class="project-sidebar">
+    <div class="sidebar-block">
+      <h2 class="sidebar-label">Stack</h2>
+      <div class="sidebar-chips">
+        {entry.data.stack.map(s => <span class="chip">{s}</span>)}
+      </div>
+    </div>
+
+    <div class="sidebar-block">
+      <h2 class="sidebar-label">Role</h2>
+      <span class="sidebar-value" style="text-transform: capitalize;">
+        {entry.data.role}
+      </span>
+    </div>
+
+    {(entry.data.repoUrl || entry.data.liveUrl) && (
+      <div class="sidebar-block">
+        <h2 class="sidebar-label">Links</h2>
+        <div class="sidebar-links">
+          {entry.data.repoUrl && (
+            <a href={entry.data.repoUrl} class="sidebar-link"
+               target="_blank" rel="noopener noreferrer">
+              <Icon name="brand-github" size={16} />
+              Repository
+            </a>
+          )}
+          {entry.data.liveUrl && (
+            <a href={entry.data.liveUrl} class="sidebar-link"
+               target="_blank" rel="noopener noreferrer">
+              <Icon name="lucide:external-link" size={16} />
+              Live demo
+            </a>
+          )}
+        </div>
+      </div>
+    )}
+  </aside>
+</div>
+
+<style>
+  .project-header { margin-bottom: 3rem; }
+
+  .project-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-md);
+    background-color: oklch(0.44 0.14 240 / 0.10);
+    color: var(--color-accent);
+  }
+
+  .project-date {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    margin-left: auto;
+  }
+
+  .project-title {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    line-height: var(--leading-tight);
+    margin-bottom: 1rem;
+  }
+
+  .project-summary {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    max-width: 64ch;
+  }
+
+  .project-body {
+    display: grid;
+    grid-template-columns: 1fr 18rem;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .project-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: sticky;
+    top: 5rem;
+  }
+
+  .sidebar-block { display: flex; flex-direction: column; gap: 0.625rem; }
+
+  .sidebar-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-text-tertiary);
+  }
+
+  .sidebar-chips { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+
+  .sidebar-value {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .sidebar-links { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .sidebar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .sidebar-link:hover { color: var(--color-accent-hover); }
+
+  @media (max-width: 900px) {
+    .project-body { grid-template-columns: 1fr; gap: 2.5rem; }
+    .project-sidebar { position: static; }
+  }
+</style>

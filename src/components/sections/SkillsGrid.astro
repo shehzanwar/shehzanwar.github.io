@@ -1,0 +1,134 @@
+---
+// src/components/sections/SkillsGrid.astro
+import type { CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  skills: CollectionEntry<'skills'>[];
+}
+
+const { skills } = Astro.props;
+---
+
+<ul class="skills-grid" role="list">
+  {skills.map(skill => (
+    <li class="skill-card">
+      <div class="skill-icon-wrap">
+        <Icon name={skill.data.iconRef} size={22} />
+      </div>
+
+      <div class="skill-body">
+        <div class="skill-header">
+          <span class="skill-title">{skill.data.title}</span>
+          <span class="skill-level">{skill.data.proficiencyLevel}/10</span>
+        </div>
+
+        <div class="skill-bar-track" role="progressbar"
+          aria-valuenow={skill.data.proficiencyLevel}
+          aria-valuemin={1}
+          aria-valuemax={10}
+          aria-label={`${skill.data.title} proficiency: ${skill.data.proficiencyLevel} out of 10`}
+        >
+          <div
+            class="skill-bar-fill"
+            style={`width: ${skill.data.proficiencyLevel * 10}%`}
+          ></div>
+        </div>
+
+        <div class="skill-tags">
+          {skill.data.tags.slice(0, 3).map(t => (
+            <span class="tag">{t}</span>
+          ))}
+        </div>
+      </div>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .skills-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .skill-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.25rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    align-items: flex-start;
+  }
+
+  .skill-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background-color: oklch(0.44 0.14 240 / 0.10);
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .skill-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .skill-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .skill-level {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  .skill-bar-track {
+    height: 4px;
+    background-color: var(--color-border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-bar-fill {
+    height: 100%;
+    background-color: var(--color-accent);
+    border-radius: 2px;
+    transition: width var(--duration-slow) var(--ease-out-expo);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .skills-grid { grid-template-columns: 1fr; }
+  }
+</style>

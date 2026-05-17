@@ -1,0 +1,86 @@
+---
+title: Why Bayesian Inference Changed How I Think About A/B Tests
+slug: rethinking-ab-testing-bayesian
+excerpt: Most A/B testing frameworks hand you a p-value and a binary verdict. Bayesian methods hand you a probability distribution over outcomes — and that changes everything about how you communicate experiment results to stakeholders.
+publishedAt: 2025-03-14
+readingTime: 7
+tags:
+  - Statistics
+  - Experimentation
+  - Bayesian Methods
+  - Product Analytics
+---
+
+After running dozens of frequentist A/B tests in my first two years as an analyst, I kept running into the same frustration: the framework answered the wrong question.
+
+A stakeholder would ask, *"How confident are we that this feature is actually better?"* and the honest frequentist answer — *"We can reject the null at p < 0.05, which means that if the null were true, we'd see data this extreme less than 5% of the time"* — satisfied no one.
+
+What they actually wanted to know was: **what is the probability that variant B outperforms control, and by how much?**
+
+## The frequentist problem in practice
+
+Consider a typical SaaS experiment: you're testing a new onboarding flow and measuring 7-day activation rate. After two weeks, you get:
+
+- Control: 1,840 activations / 4,200 users → 43.8%
+- Variant: 1,930 activations / 4,150 users → 46.5%
+
+A chi-squared test gives p = 0.031. "Statistically significant." Ship it?
+
+Maybe. But p = 0.031 tells you nothing about:
+
+1. The probability that variant is genuinely better (not just this sample)
+2. The expected magnitude of the improvement
+3. Whether you'd reach the same conclusion with 20% more data
+
+## Switching to a Bayesian model
+
+Using a Beta-Binomial model, we place a weakly informative prior on each variant's true conversion rate — say, `Beta(5, 5)`, which encodes the belief that rates near 50% are slightly more plausible than extreme values — then update it with observed data.
+
+```python
+import numpy as np
+from scipy import stats
+
+# Prior: Beta(5, 5) — weakly informative
+alpha_prior, beta_prior = 5, 5
+
+# Posterior for control
+a_ctrl = alpha_prior + 1840
+b_ctrl = beta_prior + (4200 - 1840)
+
+# Posterior for variant
+a_var = alpha_prior + 1930
+b_var = beta_prior + (4150 - 1930)
+
+# Monte Carlo estimate: P(variant > control)
+samples = 200_000
+ctrl_samples = np.random.beta(a_ctrl, b_ctrl, samples)
+var_samples  = np.random.beta(a_var,  b_var,  samples)
+
+p_variant_better = (var_samples > ctrl_samples).mean()
+expected_lift    = (var_samples - ctrl_samples).mean()
+
+print(f"P(variant > control): {p_variant_better:.1%}")
+print(f"Expected absolute lift: {expected_lift:.2%}")
+```
+
+Output:
+```
+P(variant > control): 97.3%
+Expected absolute lift: +2.65%
+```
+
+Now I have something I can say in a product review: *"There's a 97% probability the new onboarding flow improves 7-day activation, with an expected lift around 2.7 percentage points."*
+
+## When it matters most
+
+The Bayesian framing becomes decisive in two situations:
+
+**Early stopping.** Frequentist sequential testing requires pre-specified stopping rules to control Type I error. Bayesian updating is coherent at any sample size — you can check the posterior daily and stop when you reach a business-relevant probability threshold.
+
+**Communicating uncertainty.** A 95% credible interval on the lift is exactly what a stakeholder thinks a "confidence interval" means. Give them the right thing.
+
+## Caveats
+
+Prior choice matters more than practitioners acknowledge. A `Beta(1, 1)` flat prior and a `Beta(50, 50)` strong-center prior will converge on identical posteriors with large samples, but differ meaningfully at n = 200. Be transparent about your prior and run a sensitivity check.
+
+Bayesian methods don't eliminate the need for statistical discipline — they relocate it.

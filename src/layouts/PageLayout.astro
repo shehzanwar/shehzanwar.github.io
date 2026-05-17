@@ -1,0 +1,22 @@
+---
+// src/layouts/PageLayout.astro
+import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/islands/Nav';
+import Footer from '../components/sections/Footer.astro';
+import type { MetaOutput } from '../lib/seo';
+
+interface Props {
+  meta: MetaOutput;
+  lang?: string;
+}
+
+const { meta, lang } = Astro.props;
+---
+
+<BaseLayout meta={meta} lang={lang}>
+  <Nav client:load />
+  <main id="main-content">
+    <slot />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,97 @@
+---
+// src/components/primitives/BentoCard.astro
+interface Props {
+  colSpan?: number;
+  rowSpan?: number;
+  href?: string;
+  label?: string;
+  class?: string;
+}
+
+const { colSpan = 4, rowSpan = 1, href, label, class: className } = Astro.props;
+---
+
+<div
+  class:list={['bento-card', className]}
+  data-span={`col-${colSpan} row-${rowSpan}`}
+  style={`--col-span: ${colSpan}; --row-span: ${rowSpan};`}
+>
+  {href ? (
+    <a href={href} aria-label={label} class="bento-inner">
+      <slot />
+    </a>
+  ) : (
+    <div class="bento-inner" tabindex="0" role="article" aria-label={label}>
+      <slot />
+    </div>
+  )}
+</div>
+
+<style>
+  .bento-card {
+    grid-column: span var(--col-span, 4);
+    grid-row:    span var(--row-span, 1);
+    min-height: 0;
+  }
+
+  .bento-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1.5rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow-card);
+    will-change: transform;
+    transition:
+      transform    var(--duration-base) var(--ease-out-expo),
+      box-shadow   var(--duration-base) var(--ease-out-expo),
+      border-color var(--duration-base) var(--ease-out-expo);
+  }
+
+  .bento-inner:hover,
+  .bento-inner:focus-visible {
+    transform: translate3d(0, -4px, 0);
+    box-shadow:
+      var(--shadow-card-hover),
+      inset 0 0 0 1px oklch(0.44 0.14 240 / 0.35);
+    border-color: var(--color-accent);
+    outline: none;
+  }
+
+  .bento-inner:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bento-inner {
+      will-change: auto;
+      transition: opacity var(--duration-fast) var(--ease-out-expo);
+    }
+
+    .bento-inner:hover,
+    .bento-inner:focus-visible {
+      transform: none;
+      opacity: 0.85;
+    }
+  }
+
+  /* Clamp spans to available grid columns on medium screens */
+  @media (max-width: 1024px) {
+    .bento-card {
+      grid-column: span min(var(--col-span), 6);
+    }
+  }
+
+  /* Full width on mobile */
+  @media (max-width: 640px) {
+    .bento-card {
+      grid-column: 1 / -1;
+      grid-row: span 1;
+    }
+  }
+</style>

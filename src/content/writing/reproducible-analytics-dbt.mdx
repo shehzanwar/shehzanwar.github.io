@@ -1,0 +1,102 @@
+---
+title: Building a Reproducible Analytics Pipeline with dbt and Snowflake
+slug: reproducible-analytics-dbt
+excerpt: A walkthrough of how I structured a mid-market SaaS company's transformation layer using dbt's staging-intermediate-marts pattern, and the schema tests that caught three production bugs before they reached a single dashboard.
+publishedAt: 2025-04-02
+readingTime: 9
+tags:
+  - dbt
+  - Snowflake
+  - Data Engineering
+  - Analytics Engineering
+---
+
+The first time a dashboard showed a customer their own churned revenue labeled as "active MRR," I knew we needed better data contracts.
+
+We had a working Snowflake warehouse. We had Tableau dashboards the business trusted. What we didn't have was any guarantee that the SQL transformations powering those dashboards were correct, consistent, or understandable to anyone other than the analyst who wrote them.
+
+dbt changed that — but only after we invested in learning how to use it properly.
+
+## The problem with raw SQL in a warehouse
+
+Before dbt, our transformation layer was a collection of scheduled SQL scripts run by Airflow. Each script dropped and recreated a table. Dependencies were implicit — you knew `fact_subscriptions` depended on `stg_stripe_events` because you'd read both scripts. New analysts had no way to discover this. Broken dependencies surfaced as nulls in dashboards, not as pipeline failures.
+
+Three specific problems drove the migration:
+
+1. **No tests.** A column rename in a source table would silently propagate nulls downstream.
+2. **No lineage.** Understanding upstream dependencies required reading SQL manually.
+3. **No documentation.** Column descriptions lived in a shared Google Doc that was perpetually out of date.
+
+## The model structure we settled on
+
+dbt's [recommended layering](https://docs.getdbt.com/guides/best-practices/how-we-structure-our-projects) gave us a starting point, but we adapted it to our stack:
+
+```
+models/
+├── staging/          # 1:1 with source tables; rename + cast only
+│   ├── stripe/
+│   │   ├── stg_stripe__charges.sql
+│   │   └── stg_stripe__subscriptions.sql
+│   └── salesforce/
+│       └── stg_salesforce__accounts.sql
+├── intermediate/     # Business logic; never exposed to BI tools
+│   ├── int_subscriptions__joined.sql
+│   └── int_mrr__monthly_cohorts.sql
+└── marts/            # Stable, documented; BI tools point here only
+    ├── finance/
+    │   └── fct_mrr.sql
+    └── product/
+        └── fct_activation_funnel.sql
+```
+
+**Staging models** do nothing but rename columns to a consistent convention and cast types. No joins, no business logic. This means any downstream model that breaks after a source change breaks in staging — caught immediately, not in a customer-facing chart.
+
+**Intermediate models** contain joins and business logic, but are never referenced directly by Looker or Tableau. They're building blocks.
+
+**Marts** are the public API of the warehouse. Column names and data types here are treated as contracts.
+
+## The tests that saved us
+
+Out of the box, dbt ships with four generic tests: `not_null`, `unique`, `accepted_values`, and `relationships`. We layered `dbt-expectations` on top for statistical tests.
+
+These three tests caught real bugs before they reached production:
+
+```yaml
+# models/marts/finance/fct_mrr.yml
+models:
+  - name: fct_mrr
+    columns:
+      - name: subscription_id
+        tests:
+          - not_null
+          - unique   # Caught a fan-out join in int_subscriptions__joined
+
+      - name: mrr_amount_usd
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 50000   # Caught a unit error: cents vs. dollars
+
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['active', 'trialing', 'past_due', 'canceled']
+              # Caught an undocumented 'cancelled' (British spelling) in source data
+```
+
+The fan-out join (`unique` failure) would have doubled MRR figures in the finance dashboard. The unit error would have shown $500 ARR customers as $50,000. The spelling inconsistency would have left ~200 rows unclassified, making churn calculations wrong.
+
+## What reproducibility actually means
+
+A pipeline is reproducible when a new team member can:
+
+1. Clone the repo
+2. Run `dbt build`
+3. Get the same tables as production, with tests passing
+
+With the old SQL-script approach, this wasn't possible. With dbt, it's the default. The warehouse becomes a versioned artifact, not a fragile shared state.
+
+The ongoing discipline is keeping the model layer honest — resisting the urge to add business logic to staging models because "it's just a small calculation," and maintaining mart column documentation as part of the PR review checklist, not as an afterthought.
+
+That Google Doc is deleted. The schema YAML files are the documentation now.

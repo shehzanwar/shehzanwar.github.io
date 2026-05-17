@@ -1,0 +1,49 @@
+---
+// src/pages/work/[slug].astro
+import PageLayout from '../../layouts/PageLayout.astro';
+import ProjectDetail from '../../components/sections/ProjectDetail.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { buildMeta } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(entry => ({
+    params: { slug: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props { entry: CollectionEntry<'projects'> }
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const meta = buildMeta({
+  title: `${entry.data.title} — Work`,
+  description: entry.data.summary,
+});
+---
+
+<PageLayout meta={meta}>
+  <div class="page-section">
+    <a href="/work" class="back-link">← All work</a>
+    <ProjectDetail entry={entry}>
+      <Content />
+    </ProjectDetail>
+  </div>
+</PageLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    text-decoration: none;
+    margin-bottom: 2.5rem;
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+
+  .back-link:hover { color: var(--color-text-primary); }
+</style>

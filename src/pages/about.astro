@@ -1,0 +1,99 @@
+---
+// src/pages/about.astro
+import PageLayout from '../layouts/PageLayout.astro';
+import ExperienceList from '../components/sections/ExperienceList.astro';
+import SkillsGrid from '../components/sections/SkillsGrid.astro';
+import { getCollection } from 'astro:content';
+import { buildMeta } from '../lib/seo';
+
+const meta = buildMeta({
+  title: 'About — Shehzan Warraich',
+  description:
+    'Data analyst and Georgia Tech OMSA candidate. Specialising in forecasting, analytics pipelines, and data tooling.',
+});
+
+const [experienceEntries, skillEntries] = await Promise.all([
+  getCollection('experience'),
+  getCollection('skills'),
+]);
+
+const experience = experienceEntries
+  .sort((a, b) => b.data.start.getTime() - a.data.start.getTime());
+
+const skills = skillEntries
+  .sort((a, b) => b.data.proficiencyLevel - a.data.proficiencyLevel);
+---
+
+<PageLayout meta={meta}>
+  <div class="page-section">
+    <!-- Intro -->
+    <section class="about-intro" aria-labelledby="about-heading">
+      <h1 id="about-heading" class="about-heading">About</h1>
+      <p class="about-lead">
+        I'm a data analyst and Georgia Tech OMSA candidate based in Atlanta.
+        My work sits at the intersection of statistics, engineering, and product
+        thinking — building forecasting models, analytics pipelines, and the
+        interfaces that help teams act on what the data is saying.
+      </p>
+      <p class="about-body">
+        Before joining Axiom Analytics, I worked at Meridian Group where I built
+        self-serve reporting infrastructure for the operations team. I hold a
+        BS in Statistics and am completing my MS in Analytics (OMSA) part-time.
+        Outside of work I write about Bayesian inference, reproducible research,
+        and data tooling.
+      </p>
+    </section>
+
+    <!-- Experience -->
+    <section class="about-section" aria-labelledby="experience-heading">
+      <h2 id="experience-heading" class="section-title" style="margin-bottom: 2rem;">
+        Experience
+      </h2>
+      <ExperienceList entries={experience} />
+    </section>
+
+    <!-- Skills -->
+    <section class="about-section" aria-labelledby="skills-heading">
+      <h2 id="skills-heading" class="section-title" style="margin-bottom: 1.5rem;">
+        Skills
+      </h2>
+      <SkillsGrid skills={skills} />
+    </section>
+  </div>
+</PageLayout>
+
+<style>
+  .about-intro {
+    max-width: 68ch;
+    margin-bottom: 5rem;
+  }
+
+  .about-heading {
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-lead {
+    font-size: var(--text-xl);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .about-body {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-tertiary);
+  }
+
+  .about-section {
+    margin-bottom: 5rem;
+  }
+
+  .about-section:last-child {
+    margin-bottom: 0;
+  }
+</style>

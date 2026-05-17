@@ -5,11 +5,12 @@ start: 2023-01-01
 end: 2023-12-01
 location: Tempe, AZ
 highlights:
-  - Led technical redesign of client-facing systems, improving overall performance by 25%.
-  - Engineered a Python data processing tool that reduced processing time by 27% through algorithmic optimization.
-  - Designed a chunked file-handling system to support legacy constraints and improve data throughput for large uploads.
+  - Engineered a custom CSV/XML/JSON condenser application in Visual Basic to parse, compress, and optimize large, complex data files for legacy systems.
+  - Reduced file processing overhead significantly by implementing an efficient chunked parsing architecture that handled deeply nested XML and wide CSV schemas.
+  - Published open-source tool on GitHub — github.com/shehzanwar/CSV-XML-JSON-Condenser-App — covering multiple data format targets in a single .NET desktop application.
 skills:
-  - Python
-  - Software Architecture
-  - Jira
+  - Visual Basic
+  - .NET
+  - Data Parsing
+  - Legacy Systems
 ---

@@ -1,7 +1,7 @@
 ---
 name: "Shehzad Anwar"
 headline: "Machine Learning & Data Analyst"
-subhead: "MS Analytics Candidate at Georgia Tech | Specializing in Computational Data Analysis, Machine Learning, and System Architecture."
+subhead: "MS Analytics candidate at Georgia Tech, specializing in machine learning, computational data analysis, and data engineering."
 email: "shehzanwar@gmail.com"
 socials:
   github: https://github.com/shehzanwar

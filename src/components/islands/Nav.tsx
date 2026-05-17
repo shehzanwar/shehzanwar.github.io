@@ -81,12 +81,12 @@ function WorkPanelContent() {
     <div style={{ padding: '1.25rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', width: 460, boxSizing: 'border-box' }}>
       <div>
         <SectionLabel>Featured</SectionLabel>
-        <PanelLink href="/work/demand-forecasting"  title="Demand Forecasting"   sub="OMSA Capstone · shipped"          />
-        <PanelLink href="/work/analytics-dashboard" title="Analytics Dashboard" sub="Streaming pipeline · in progress" />
+        <PanelLink href="/work/predictive-modeling" title="Predictive Modeling"        sub="Regression & classification · shipped" />
+        <PanelLink href="/work/ml-algorithms"       title="ML Implementations"         sub="PCA, K-Means, SVMs · shipped"         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '1.5rem' }}>
         <p style={{ margin: 0, fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
-          Python · dbt · Snowflake<br />React · Astro
+          Python · Scikit-Learn<br />NumPy · Pandas
         </p>
         <AllLink href="/work">All projects</AllLink>
       </div>
@@ -257,10 +257,12 @@ export default function Nav() {
             {/* Wordmark */}
             <a
               href="/"
-              aria-label="Shehzan Warraich — home"
-              style={{ fontWeight: 600, fontSize: 'var(--text-base)', color: 'var(--color-text-primary)', textDecoration: 'none', letterSpacing: 'var(--tracking-tight)' }}
+              aria-label="Shehzad Anwar — home"
+              style={{ color: 'var(--color-text-primary)', textDecoration: 'none' }}
             >
-              SW
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-xl)', letterSpacing: 'var(--tracking-tight)' }}>
+                SA.
+              </span>
             </a>
 
             {/* Desktop links — hidden below md breakpoint via class */}
@@ -442,8 +444,8 @@ export default function Nav() {
           </SheetSection>
 
           <SheetSection label="Featured Work">
-            <SheetLink href="/work/demand-forecasting"  onClick={closeMobile} size="sm">Demand Forecasting</SheetLink>
-            <SheetLink href="/work/analytics-dashboard" onClick={closeMobile} size="sm">Analytics Dashboard</SheetLink>
+            <SheetLink href="/work/predictive-modeling" onClick={closeMobile} size="sm">Predictive Modeling</SheetLink>
+            <SheetLink href="/work/ml-algorithms"       onClick={closeMobile} size="sm">ML Implementations</SheetLink>
           </SheetSection>
 
           <SheetSection label="Recent Writing">

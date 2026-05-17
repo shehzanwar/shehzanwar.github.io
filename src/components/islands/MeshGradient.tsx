@@ -84,13 +84,14 @@ export default function MeshGradient() {
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
 
     const resize = () => {
-      const w = canvas.clientWidth  || canvas.parentElement?.clientWidth  || window.innerWidth;
-      const h = canvas.clientHeight || canvas.parentElement?.clientHeight || window.innerHeight;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
       if (w === 0 || h === 0) return;
       renderer.setSize(w, h);
       (program.uniforms.u_resolution.value as number[]) = [w, h];
     };
-    resize();
+    // rAF ensures the canvas has been laid out before we measure
+    requestAnimationFrame(resize);
 
     const draw = (t: number) => {
       program.uniforms.u_time.value = t * 0.001;

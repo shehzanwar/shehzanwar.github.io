@@ -1,5 +1,5 @@
 ---
-// src/pages/work/[slug].astro
+// src/pages/projects/[slug].astro
 import PageLayout from '../../layouts/PageLayout.astro';
 import ProjectDetail from '../../components/sections/ProjectDetail.astro';
 import { getCollection, render } from 'astro:content';
@@ -20,14 +20,14 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 
 const meta = buildMeta({
-  title: `${entry.data.title} — Work`,
+  title: `${entry.data.title} — Projects`,
   description: entry.data.summary,
 });
 ---
 
 <PageLayout meta={meta}>
   <div class="page-section">
-    <a href="/work" class="back-link">← All work</a>
+    <a href="/projects" class="back-link">← All projects</a>
     <ProjectDetail entry={entry}>
       <Content />
     </ProjectDetail>

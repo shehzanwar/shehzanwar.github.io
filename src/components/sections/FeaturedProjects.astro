@@ -37,7 +37,7 @@ const statusLabel: Record<string, string> = {
   <div class="page-section" style="padding-top: 2rem;">
     <header class="section-header">
       <h2 class="section-title">Featured Work</h2>
-      <a href="/work" class="section-link">View all work →</a>
+      <a href="/projects" class="section-link">View all projects →</a>
     </header>
 
     <BentoGrid>
@@ -46,7 +46,7 @@ const statusLabel: Record<string, string> = {
         const isHero = total === 1;
         return (
           <BentoCard
-            href={`/work/${project.data.slug}`}
+            href={`/projects/${project.data.slug}`}
             colSpan={col}
             rowSpan={row}
             label={project.data.title}

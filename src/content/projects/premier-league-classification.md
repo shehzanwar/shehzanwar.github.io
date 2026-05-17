@@ -12,7 +12,7 @@ repoUrl: https://github.com/shehzanwar/CDA6740/tree/main/Project
 featured: true
 order: 3
 coverIcon: lucide:trophy
-publishedAt: 2025-02-01
+publishedAt: 2025-11-30
 status: shipped
 ---
 

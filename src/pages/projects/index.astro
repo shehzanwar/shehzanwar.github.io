@@ -1,5 +1,5 @@
 ---
-// src/pages/work/index.astro
+// src/pages/projects/index.astro
 import PageLayout from '../../layouts/PageLayout.astro';
 import BentoGrid from '../../components/sections/BentoGrid.astro';
 import BentoCard from '../../components/primitives/BentoCard.astro';
@@ -8,7 +8,7 @@ import { getCollection } from 'astro:content';
 import { buildMeta } from '../../lib/seo';
 
 const meta = buildMeta({
-  title: 'Work — Shehzad Anwar',
+  title: 'Projects — Shehzad Anwar',
   description:
     'Data pipelines, machine learning implementations, and engineering projects — built for real analytical problems.',
 });
@@ -33,7 +33,7 @@ const statusLabel: Record<string, string> = {
 <PageLayout meta={meta}>
   <div class="page-section">
     <header class="page-header">
-      <h1 class="page-title">Work</h1>
+      <h1 class="page-title">Projects</h1>
       <p class="page-desc">
         Data pipelines, machine learning systems, and engineering projects —
         each one starting with a real problem worth solving.
@@ -41,9 +41,9 @@ const statusLabel: Record<string, string> = {
     </header>
 
     <BentoGrid>
-      {projects.map((project, i) => (
+      {projects.map((project) => (
         <BentoCard
-          href={`/work/${project.data.slug}`}
+          href={`/projects/${project.data.slug}`}
           colSpan={projects.length === 1 ? 12 : 6}
           rowSpan={projects.length === 1 ? 2 : 1}
           label={project.data.title}

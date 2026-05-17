@@ -8,7 +8,7 @@ import MeshGradient from '../islands/MeshGradient';
 <section class="hero" aria-labelledby="hero-headline">
   <!-- Skewed gradient background — canvas inside clip-path wrapper -->
   <div class="hero-gradient" aria-hidden="true">
-    <MeshGradient client:visible />
+    <MeshGradient client:load />
   </div>
 
   <div class="hero-content">
@@ -26,7 +26,7 @@ import MeshGradient from '../islands/MeshGradient';
       </p>
 
       <div class="hero-ctas">
-        <a href="/work" class="cta-primary">View Work</a>
+        <a href="/projects" class="cta-primary">View Projects</a>
         <a href="/about" class="cta-secondary">About Me</a>
       </div>
     </div>
@@ -42,22 +42,22 @@ import MeshGradient from '../islands/MeshGradient';
         </div>
         <pre
           class="terminal-body"
-        ><code>&gt;&gt;&gt; import pandas as pd
+        ><code>&gt;&gt;&gt; import fastf1
 &gt;&gt;&gt; from sklearn.ensemble import RandomForestRegressor
-&gt;&gt;&gt; from sklearn.preprocessing import StandardScaler
-
-&gt;&gt;&gt; df = pd.read_csv(<span class="t-str">'f1_telemetry.csv'</span>)  <span class="t-comment"># 12,000 lap records</span>
-&gt;&gt;&gt; features = [<span class="t-str">'speed'</span>, <span class="t-str">'throttle'</span>, <span class="t-str">'brake'</span>, <span class="t-str">'drs'</span>, <span class="t-str">'tyre_age'</span>]
-&gt;&gt;&gt; X, y = df[features], df[<span class="t-str">'lap_time_s'</span>]
-
-&gt;&gt;&gt; scaler = StandardScaler()
-&gt;&gt;&gt; X_sc = scaler.fit_transform(X)
-&gt;&gt;&gt; rf = RandomForestRegressor(n_estimators=<span class="t-num">200</span>, max_depth=<span class="t-num">12</span>, random_state=<span class="t-num">42</span>)
-&gt;&gt;&gt; rf.fit(X_sc, y)
-
-&gt;&gt;&gt; lap = [[<span class="t-num">312.5</span>, <span class="t-num">0.97</span>, <span class="t-num">0.0</span>, <span class="t-num">1</span>, <span class="t-num">18</span>]]
-&gt;&gt;&gt; print(f<span class="t-str">"Predicted: &#123;rf.predict(scaler.transform(lap))[0]:.3f&#125;s"</span>)
-<span class="t-output">Predicted: 84.217s</span></code></pre>
+&gt;&gt;&gt; from sklearn.decomposition import PCA
+&gt;&gt;&gt;
+&gt;&gt;&gt; session = fastf1.get_session(<span class="t-num">2023</span>, <span class="t-str">'Silverstone'</span>, <span class="t-str">'Q'</span>)
+&gt;&gt;&gt; session.load(telemetry=<span class="t-num">True</span>)
+&gt;&gt;&gt;
+&gt;&gt;&gt; X = session.telemetry[[<span class="t-str">'Speed'</span>, <span class="t-str">'Brake'</span>, <span class="t-str">'Throttle'</span>, <span class="t-str">'DRS'</span>]]
+&gt;&gt;&gt; y = session.telemetry[<span class="t-str">'Time'</span>]
+&gt;&gt;&gt;
+&gt;&gt;&gt; pca = PCA(n_components=<span class="t-num">2</span>)  <span class="t-comment"># reduce telemetry noise</span>
+&gt;&gt;&gt; X_reduced = pca.fit_transform(X)
+&gt;&gt;&gt;
+&gt;&gt;&gt; model = RandomForestRegressor(n_estimators=<span class="t-num">100</span>)
+&gt;&gt;&gt; model.fit(X_reduced, y)
+<span class="t-output">RandomForestRegressor(n_estimators=100)</span></code></pre>
       </div>
     </div>
   </div>
@@ -76,8 +76,10 @@ import MeshGradient from '../islands/MeshGradient';
   .hero-gradient {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
     clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%);
-    z-index: 0;
+    z-index: -1;
     overflow: hidden;
   }
 

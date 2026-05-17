@@ -2,7 +2,7 @@
 title: Forecasting Football
 slug: premier-league-classification
 summary: A comparative analysis of classification models to predict Premier League match outcomes using historical match statistics and engineered features.
-description: Evaluated Logistic Regression, Random Forest, and Gradient Boosting classifiers on Premier League match data, with EDA-driven feature selection and 10-fold cross-validation to identify the most reliable predictors of match outcome.
+description: Evaluated multiple classification models on Premier League match data with EDA-driven feature selection and 10-fold cross-validation. Lasso Regression achieved 54% accuracy, outperforming the 45% baseline dummy model for match outcome prediction.
 category: Machine Learning
 stack:
   - Python

@@ -18,7 +18,7 @@ const projects = defineCollection({
                    }),
       summary:     z.string().min(20).max(200),
       description: z.string().min(10),
-      category:    z.enum(['Machine Learning', 'Data Engineering', 'Statistical Modeling', 'Predictive Analytics']),
+      category:    z.enum(['Machine Learning', 'Data Engineering', 'Statistical Modeling', 'Predictive Analytics', 'Data Analysis', 'Analytics Engineering']),
       stack:       z.array(z.string().min(1).max(40)).min(1).max(12),
       repoUrl:     z.string().url().optional(),
       liveUrl:     z.string().url().optional(),

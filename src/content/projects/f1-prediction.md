@@ -1,8 +1,8 @@
 ---
 title: "Formula One: Statistical Learning"
 slug: f1-prediction
-summary: Predicting lap times and podium finishes using advanced statistical learning and telemetry data from Formula 1 race sessions.
-description: Applied PCA for dimensionality reduction on high-frequency F1 telemetry features, then trained and tuned a Random Forest model to predict lap times and podium probability, evaluated against held-out race sessions.
+summary: Predicting F1 lap times (R² 0.863) and podium finishes (AUC 0.914) using PCA, LDA, and Random Forest on high-dimensional race telemetry data.
+description: Analyzed the computational performance of PCA, K-Means Clustering, and Support Vector Machines on high-dimensional F1 telemetry data. Engineered predictive models where a Random Forest Regressor achieved an R² of 0.863 for lap times, and an LDA classification model reached an AUC of 0.914 for predicting podium finishes.
 category: Statistical Modeling
 stack:
   - Python

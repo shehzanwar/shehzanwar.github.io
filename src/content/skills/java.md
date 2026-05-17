@@ -1,6 +1,6 @@
 ---
 title: Java
-proficiencyLevel: 7
+category: Languages
 tags:
   - OOP
   - Backend Development

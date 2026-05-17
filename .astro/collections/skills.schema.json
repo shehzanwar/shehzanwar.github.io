@@ -9,10 +9,13 @@
           "minLength": 1,
           "maxLength": 80
         },
-        "proficiencyLevel": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 10
+        "category": {
+          "type": "string",
+          "enum": [
+            "Languages",
+            "Libraries & Frameworks",
+            "Developer Tools"
+          ]
         },
         "tags": {
           "type": "array",
@@ -38,7 +41,7 @@
       },
       "required": [
         "title",
-        "proficiencyLevel",
+        "category",
         "tags",
         "iconRef"
       ],

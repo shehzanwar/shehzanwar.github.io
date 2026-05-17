@@ -7,9 +7,9 @@ import { getCollection } from 'astro:content';
 import { buildMeta } from '../lib/seo';
 
 const meta = buildMeta({
-  title: 'About — Shehzan Warraich',
+  title: 'About — Shehzad Anwar',
   description:
-    'Data analyst and Georgia Tech OMSA candidate. Specialising in forecasting, analytics pipelines, and data tooling.',
+    'Data analyst and software developer. MS Analytics candidate at Georgia Tech, specializing in computational data analysis, machine learning, and system architecture.',
 });
 
 const [experienceEntries, skillEntries] = await Promise.all([
@@ -21,7 +21,7 @@ const experience = experienceEntries
   .sort((a, b) => b.data.start.getTime() - a.data.start.getTime());
 
 const skills = skillEntries
-  .sort((a, b) => b.data.proficiencyLevel - a.data.proficiencyLevel);
+  .sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <PageLayout meta={meta}>
@@ -30,17 +30,20 @@ const skills = skillEntries
     <section class="about-intro" aria-labelledby="about-heading">
       <h1 id="about-heading" class="about-heading">About</h1>
       <p class="about-lead">
-        I'm a data analyst and Georgia Tech OMSA candidate based in Atlanta.
-        My work sits at the intersection of statistics, engineering, and product
-        thinking — building forecasting models, analytics pipelines, and the
-        interfaces that help teams act on what the data is saying.
+        I'm a data analyst and software developer pursuing a Master of Science
+        in Analytics (OMSA) at Georgia Tech. My work spans data engineering,
+        machine learning, and system architecture — building pipelines and tools
+        that turn raw signals into reliable decisions.
       </p>
       <p class="about-body">
-        Before joining Axiom Analytics, I worked at Meridian Group where I built
-        self-serve reporting infrastructure for the operations team. I hold a
-        BS in Statistics and am completing my MS in Analytics (OMSA) part-time.
-        Outside of work I write about Bayesian inference, reproducible research,
-        and data tooling.
+        Most recently I interned as a Data Analyst at Trinamix Inc. in San Jose,
+        conducting data integrity audits and writing SQL workflows to remediate
+        security vulnerabilities across enterprise systems. Before that I worked
+        as a freelance developer through Yanbor LLC., leading technical redesigns
+        and engineering data processing tools that reduced processing times by 27%.
+        Outside of work I build projects at the intersection of geopolitics and
+        commodity markets, and I write occasionally about data tooling and
+        reproducible analytics.
       </p>
     </section>
 

@@ -8,9 +8,9 @@ import { getCollection } from 'astro:content';
 import { buildMeta } from '../../lib/seo';
 
 const meta = buildMeta({
-  title: 'Work — Shehzan Warraich',
+  title: 'Work — Shehzad Anwar',
   description:
-    'A collection of forecasting models, data pipelines, and analytics tools — from OMSA capstone research to production systems.',
+    'Data pipelines, machine learning implementations, and engineering projects — built for real analytical problems.',
 });
 
 const allProjects = await getCollection('projects');
@@ -35,17 +35,17 @@ const statusLabel: Record<string, string> = {
     <header class="page-header">
       <h1 class="page-title">Work</h1>
       <p class="page-desc">
-        Forecasting models, analytics infrastructure, and the tooling built
-        around them. Each project starts with a real decision someone needs to make.
+        Data pipelines, machine learning systems, and engineering projects —
+        each one starting with a real problem worth solving.
       </p>
     </header>
 
     <BentoGrid>
-      {projects.map(project => (
+      {projects.map((project, i) => (
         <BentoCard
           href={`/work/${project.data.slug}`}
-          colSpan={6}
-          rowSpan={1}
+          colSpan={projects.length === 1 ? 12 : 6}
+          rowSpan={projects.length === 1 ? 2 : 1}
           label={project.data.title}
         >
           <div class="card-row">

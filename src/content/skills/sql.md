@@ -1,6 +1,6 @@
 ---
 title: SQL
-proficiencyLevel: 9
+category: Languages
 tags:
   - PostgreSQL
   - MySQL

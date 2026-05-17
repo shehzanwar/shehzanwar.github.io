@@ -1,6 +1,6 @@
 ---
 title: Python
-proficiencyLevel: 9
+category: Languages
 tags:
   - NumPy
   - Pandas

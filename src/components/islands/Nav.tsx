@@ -81,12 +81,11 @@ function WorkPanelContent() {
     <div style={{ padding: '1.25rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', width: 460, boxSizing: 'border-box' }}>
       <div>
         <SectionLabel>Featured</SectionLabel>
-        <PanelLink href="/work/predictive-modeling" title="Predictive Modeling"        sub="Regression & classification · shipped" />
-        <PanelLink href="/work/ml-algorithms"       title="ML Implementations"         sub="PCA, K-Means, SVMs · shipped"         />
+        <PanelLink href="/work/geopolitical-stress-commodity-pipeline" title="Geopolitical Stress Pipeline" sub="Commodity market analysis · in progress" />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', paddingTop: '1.5rem' }}>
         <p style={{ margin: 0, fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 'var(--leading-relaxed)' }}>
-          Python · Scikit-Learn<br />NumPy · Pandas
+          Python · Pandas<br />Data Engineering · APIs
         </p>
         <AllLink href="/work">All projects</AllLink>
       </div>
@@ -444,8 +443,7 @@ export default function Nav() {
           </SheetSection>
 
           <SheetSection label="Featured Work">
-            <SheetLink href="/work/predictive-modeling" onClick={closeMobile} size="sm">Predictive Modeling</SheetLink>
-            <SheetLink href="/work/ml-algorithms"       onClick={closeMobile} size="sm">ML Implementations</SheetLink>
+            <SheetLink href="/work/geopolitical-stress-commodity-pipeline" onClick={closeMobile} size="sm">Geopolitical Stress Pipeline</SheetLink>
           </SheetSection>
 
           <SheetSection label="Recent Writing">

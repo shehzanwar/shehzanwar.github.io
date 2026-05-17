@@ -1,6 +1,6 @@
 ---
 title: Machine Learning
-proficiencyLevel: 8
+category: Libraries & Frameworks
 tags:
   - Scikit-Learn
   - Classification

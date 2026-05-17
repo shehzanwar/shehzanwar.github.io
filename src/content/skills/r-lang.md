@@ -1,6 +1,6 @@
 ---
 title: R
-proficiencyLevel: 7
+category: Languages
 tags:
   - Statistical Analysis
   - ggplot2

@@ -1,6 +1,6 @@
 ---
 title: Data Analytics
-proficiencyLevel: 9
+category: Libraries & Frameworks
 tags:
   - EDA
   - Statistics

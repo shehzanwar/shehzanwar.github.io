@@ -94,12 +94,12 @@ const siteMeta = defineCollection({
 const skills = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/skills' }),
   schema: z.object({
-    title:            z.string().min(1).max(80),
-    proficiencyLevel: z.number().int().min(1).max(10),
-    tags:             z.array(z.string().min(1).max(50)).min(1).max(10),
-    iconRef:          z.string().min(1).regex(iconRefRegex, {
-                        message: 'iconRef must be a valid astro-icon ref (e.g. lucide:code)',
-                      }),
+    title:    z.string().min(1).max(80),
+    category: z.enum(['Languages', 'Libraries & Frameworks', 'Developer Tools']),
+    tags:     z.array(z.string().min(1).max(50)).min(1).max(10),
+    iconRef:  z.string().min(1).regex(iconRefRegex, {
+                message: 'iconRef must be a valid astro-icon ref (e.g. lucide:code)',
+              }),
   }),
 });
 

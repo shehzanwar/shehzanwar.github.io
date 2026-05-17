@@ -38,21 +38,26 @@ import MeshGradient from '../islands/MeshGradient';
           <span class="terminal-dot dot-red"></span>
           <span class="terminal-dot dot-yellow"></span>
           <span class="terminal-dot dot-green"></span>
-          <span class="terminal-filename">prophet_model.py</span>
+          <span class="terminal-filename">f1_lap_prediction.py</span>
         </div>
         <pre
           class="terminal-body"
-        ><code>&gt;&gt;&gt; m = Prophet(seasonality_mode=<span class="t-str">'multiplicative'</span>)
-&gt;&gt;&gt; m.fit(df_train)  <span class="t-comment"># 730d of daily demand</span>
+        ><code>&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; from sklearn.ensemble import RandomForestRegressor
+&gt;&gt;&gt; from sklearn.preprocessing import StandardScaler
 
-&gt;&gt;&gt; future = m.make_future_dataframe(periods=<span class="t-num">90</span>)
-&gt;&gt;&gt; fc    = m.predict(future)
+&gt;&gt;&gt; df = pd.read_csv(<span class="t-str">'f1_telemetry.csv'</span>)  <span class="t-comment"># 12,000 lap records</span>
+&gt;&gt;&gt; features = [<span class="t-str">'speed'</span>, <span class="t-str">'throttle'</span>, <span class="t-str">'brake'</span>, <span class="t-str">'drs'</span>, <span class="t-str">'tyre_age'</span>]
+&gt;&gt;&gt; X, y = df[features], df[<span class="t-str">'lap_time_s'</span>]
 
-&gt;&gt;&gt; mape = mean_absolute_percentage_error(
-...     y_true, fc.tail(<span class="t-num">30</span>)[<span class="t-str">'yhat'</span>]
-... )
-&gt;&gt;&gt; print(f<span class="t-str">"MAPE: &#123;mape:.1%&#125;"</span>)
-<span class="t-output">MAPE: 4.3%</span></code></pre>
+&gt;&gt;&gt; scaler = StandardScaler()
+&gt;&gt;&gt; X_sc = scaler.fit_transform(X)
+&gt;&gt;&gt; rf = RandomForestRegressor(n_estimators=<span class="t-num">200</span>, max_depth=<span class="t-num">12</span>, random_state=<span class="t-num">42</span>)
+&gt;&gt;&gt; rf.fit(X_sc, y)
+
+&gt;&gt;&gt; lap = [[<span class="t-num">312.5</span>, <span class="t-num">0.97</span>, <span class="t-num">0.0</span>, <span class="t-num">1</span>, <span class="t-num">18</span>]]
+&gt;&gt;&gt; print(f<span class="t-str">"Predicted: &#123;rf.predict(scaler.transform(lap))[0]:.3f&#125;s"</span>)
+<span class="t-output">Predicted: 84.217s</span></code></pre>
       </div>
     </div>
   </div>

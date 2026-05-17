@@ -259,9 +259,7 @@ export default function Nav() {
               aria-label="Shehzad Anwar — home"
               style={{ color: 'var(--color-text-primary)', textDecoration: 'none' }}
             >
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--text-xl)', letterSpacing: 'var(--tracking-tight)' }}>
-                SA.
-              </span>
+              <span className="font-display font-bold text-xl tracking-tight">SA.</span>
             </a>
 
             {/* Desktop links — hidden below md breakpoint via class */}

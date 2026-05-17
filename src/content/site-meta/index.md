@@ -1,6 +1,6 @@
 ---
 name: "Shehzad Anwar"
-headline: "Data Analyst & Software Developer"
+headline: "Data Scientist & Analytics Engineer"
 subhead: "MS Analytics Candidate at Georgia Tech | Specializing in Computational Data Analysis, Machine Learning, and System Architecture."
 email: "shehzanwar@gmail.com"
 socials:

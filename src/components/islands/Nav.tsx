@@ -9,18 +9,17 @@ import { cn } from '../../lib/cn';
 
 // ─── Types ────────────────────────────────────────────────────────
 
-type PanelKey = 'Projects' | 'Writing';
+type PanelKey = 'Projects';
 
 interface PanelDims {
   width: number;
   height: number;
 }
 
-const PANEL_KEYS: readonly PanelKey[] = ['Projects', 'Writing'] as const;
+const PANEL_KEYS: readonly PanelKey[] = ['Projects'] as const;
 
 const NAV_LINKS: Array<{ label: string; href: string; panelKey: PanelKey | null }> = [
   { label: 'Projects', href: '/projects', panelKey: 'Projects' },
-  { label: 'Writing',  href: '/writing',  panelKey: 'Writing'  },
   { label: 'About',    href: '/about',    panelKey: null        },
   { label: 'Contact',  href: '/contact',  panelKey: null        },
 ];
@@ -83,17 +82,17 @@ function ProjectsPanelContent() {
       <PanelLink
         href="/projects/geopolitical-stress-commodity-pipeline"
         title="Geopolitical Stress Pipeline"
-        sub="Commodity market analysis · in progress"
+        sub="Data Engineering & API Integration"
       />
       <PanelLink
         href="/projects/f1-prediction"
         title="Formula One: Statistical Learning"
-        sub="PCA + Random Forest · ISYE 7406"
+        sub="Statistical Modeling & Telemetry"
       />
       <PanelLink
         href="/projects/premier-league-classification"
         title="Forecasting Football"
-        sub="Gradient Boosting · ISYE 6740"
+        sub="Classification & Predictive Analytics"
       />
       <div style={{ marginTop: '0.75rem' }}>
         <AllLink href="/projects">All projects</AllLink>
@@ -102,30 +101,8 @@ function ProjectsPanelContent() {
   );
 }
 
-function WritingPanelContent() {
-  return (
-    <div style={{ padding: '1.25rem 1.5rem', width: 460, boxSizing: 'border-box' }}>
-      <SectionLabel>Recent</SectionLabel>
-      <PanelLink
-        href="/writing/f1-podium-predictions"
-        title="Predicting F1 Podiums with Statistical Learning"
-        sub="PCA · Random Forest · ISYE 7406"
-      />
-      <PanelLink
-        href="/writing/premier-league-modeling"
-        title="Classification Models in the Premier League"
-        sub="Gradient Boosting · ISYE 6740"
-      />
-      <div style={{ marginTop: '0.75rem' }}>
-        <AllLink href="/writing">All articles</AllLink>
-      </div>
-    </div>
-  );
-}
-
 const PANEL_CONTENT: Record<PanelKey, React.ReactNode> = {
   Projects: <ProjectsPanelContent />,
-  Writing:  <WritingPanelContent />,
 };
 
 // ─── Hamburger icon ───────────────────────────────────────────────
@@ -463,14 +440,6 @@ export default function Nav() {
             <SheetLink href="/projects/premier-league-classification" onClick={closeMobile} size="sm">Forecasting Football</SheetLink>
           </SheetSection>
 
-          <SheetSection label="Recent Writing">
-            <SheetLink href="/writing/f1-podium-predictions" onClick={closeMobile} size="sm">
-              Predicting F1 Podiums
-            </SheetLink>
-            <SheetLink href="/writing/premier-league-modeling" onClick={closeMobile} size="sm">
-              Classification Models in the PL
-            </SheetLink>
-          </SheetSection>
         </nav>
       </div>
     </>

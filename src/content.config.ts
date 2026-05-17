@@ -18,7 +18,7 @@ const projects = defineCollection({
                    }),
       summary:     z.string().min(20).max(200),
       description: z.string().min(10),
-      role:        z.enum(['engineer', 'analyst', 'researcher', 'lead']),
+      category:    z.enum(['Machine Learning', 'Data Engineering', 'Statistical Modeling', 'Predictive Analytics']),
       stack:       z.array(z.string().min(1).max(40)).min(1).max(12),
       repoUrl:     z.string().url().optional(),
       liveUrl:     z.string().url().optional(),
@@ -62,21 +62,6 @@ const experience = defineCollection({
     ),
 });
 
-// ─── writing ──────────────────────────────────────────────────────
-const writing = defineCollection({
-  loader: glob({ pattern: '*.mdx', base: './src/content/writing' }),
-  schema: z.object({
-    title:       z.string().min(3).max(120),
-    slug:        z.string().min(3).max(80).regex(slugRegex, {
-                   message: 'slug must be lowercase kebab-case',
-                 }),
-    excerpt:     z.string().min(20).max(300),
-    publishedAt: z.coerce.date(),
-    readingTime: z.number().int().positive().max(60),
-    tags:        z.array(z.string().min(1).max(50)).min(1).max(8),
-  }),
-});
-
 // ─── siteMeta (singleton) ─────────────────────────────────────────
 const siteMeta = defineCollection({
   loader: glob({ pattern: 'index.md', base: './src/content/site-meta' }),
@@ -104,4 +89,4 @@ const skills = defineCollection({
 });
 
 // ─── Export ───────────────────────────────────────────────────────
-export const collections = { projects, experience, writing, siteMeta, skills };
+export const collections = { projects, experience, siteMeta, skills };

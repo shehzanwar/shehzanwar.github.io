@@ -112,16 +112,8 @@ import MeshGradient from '../islands/MeshGradient';
     font-weight: 700;
     line-height: var(--leading-tight);
     letter-spacing: var(--tracking-tight);
-    /* background-clip: text — gradient reflects mesh gradient colors */
-    background: linear-gradient(
-      138deg,
-      var(--color-text-primary) 30%,
-      var(--color-accent) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    color: var(--color-text-primary);
+    text-shadow: 0 1px 12px rgb(0 0 0 / 18%), 0 0 40px rgb(0 0 0 / 10%);
     margin: 0 0 1.5rem;
   }
 

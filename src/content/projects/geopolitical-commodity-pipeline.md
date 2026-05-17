@@ -3,7 +3,7 @@ title: Geopolitical Stress Commodity Pipeline
 slug: geopolitical-stress-commodity-pipeline
 summary: A data pipeline that aggregates geopolitical stress indices and correlates them with global commodity price fluctuations to surface macroeconomic signals.
 description: Engineered a modular data processing pipeline to aggregate, clean, and analyze geopolitical event data against commodity market fluctuations, producing structured datasets for downstream analysis.
-role: engineer
+category: Data Engineering
 stack:
   - Python
   - Data Engineering
@@ -14,7 +14,7 @@ featured: true
 order: 1
 coverIcon: lucide:globe
 publishedAt: 2025-03-01
-status: in-progress
+status: shipped
 ---
 
 ## Overview

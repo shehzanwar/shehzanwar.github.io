@@ -1,20 +1,18 @@
 ---
 // src/components/sections/Hero.astro
-// M06 BOUNDARY: canvas inside clip-path skewed wrapper, aria-hidden.
-// H1 uses background-clip: text. No parallax effects.
-import MeshGradient from '../islands/MeshGradient';
+// Hero section — Obsidian Precision design system.
+// Left: eyebrow + headline + bio + CTAs. Right: code editor window (decorative).
 ---
 
 <section class="hero" aria-labelledby="hero-headline">
-  <!-- Skewed gradient background — canvas inside clip-path wrapper -->
-  <div class="hero-gradient" aria-hidden="true">
-    <MeshGradient client:load />
-  </div>
+  <!-- Ambient background glows -->
+  <div class="hero-glow hero-glow--left"  aria-hidden="true"></div>
+  <div class="hero-glow hero-glow--right" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <!-- Left: headline + subhead + CTAs -->
+    <!-- Left: copy -->
     <div class="hero-left">
-      <p class="hero-eyebrow">Machine Learning &amp; Data Analyst</p>
+      <p class="hero-eyebrow">Data Analytics &amp; Machine Learning</p>
 
       <h1 id="hero-headline" class="hero-headline">
         Shehzad<br />Anwar
@@ -26,244 +24,267 @@ import MeshGradient from '../islands/MeshGradient';
       </p>
 
       <div class="hero-ctas">
-        <a href="/projects" class="cta-primary">View Projects</a>
-        <a
-          href="/SA_Resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="px-6 py-3 rounded-full font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
-        >View Resume</a>
-        <a href="/about" class="cta-secondary">About Me</a>
+        <a href="/projects" class="cta-primary">Explore My Work</a>
+        <a href="/SA_Resume.pdf" target="_blank" rel="noopener noreferrer" class="cta-ghost">
+          Download Resume
+        </a>
       </div>
     </div>
 
-    <!-- Right: terminal-style OMSA project snippet (decorative) -->
+    <!-- Right: code editor window (decorative) -->
     <div class="hero-right" aria-hidden="true">
       <div class="terminal">
         <div class="terminal-bar">
           <span class="terminal-dot dot-red"></span>
           <span class="terminal-dot dot-yellow"></span>
           <span class="terminal-dot dot-green"></span>
-          <span class="terminal-filename">f1_lap_prediction.py</span>
+          <span class="terminal-filename">f1_script.py</span>
         </div>
-        <pre
-          class="terminal-body"
-        ><code>&gt;&gt;&gt; import fastf1
-&gt;&gt;&gt; from sklearn.ensemble import RandomForestRegressor
-&gt;&gt;&gt; from sklearn.decomposition import PCA
-&gt;&gt;&gt;
-&gt;&gt;&gt; session = fastf1.get_session(<span class="t-num">2023</span>, <span class="t-str">'Silverstone'</span>, <span class="t-str">'Q'</span>)
-&gt;&gt;&gt; session.load(telemetry=<span class="t-num">True</span>)
-&gt;&gt;&gt;
-&gt;&gt;&gt; X = session.telemetry[[<span class="t-str">'Speed'</span>, <span class="t-str">'Brake'</span>, <span class="t-str">'Throttle'</span>, <span class="t-str">'DRS'</span>]]
-&gt;&gt;&gt; y = session.telemetry[<span class="t-str">'Time'</span>]
-&gt;&gt;&gt;
-&gt;&gt;&gt; pca = PCA(n_components=<span class="t-num">2</span>)  <span class="t-comment"># reduce telemetry noise</span>
-&gt;&gt;&gt; X_reduced = pca.fit_transform(X)
-&gt;&gt;&gt;
-&gt;&gt;&gt; model = RandomForestRegressor(n_estimators=<span class="t-num">100</span>)
-&gt;&gt;&gt; model.fit(X_reduced, y)
-<span class="t-output">RandomForestRegressor(n_estimators=100)</span></code></pre>
+        <pre class="terminal-body"><code><span class="t-kw">import</span> pandas <span class="t-kw">as</span> pd
+<span class="t-kw">import</span> numpy <span class="t-kw">as</span> np
+<span class="t-kw">import</span> glob, os
+<span class="t-kw">from</span> sklearn.preprocessing <span class="t-kw">import</span> StandardScaler
+
+<span class="t-cmt"># Load all F1 CSV datasets</span>
+file_paths <span class="t-op">=</span> glob.<span class="t-fn">glob</span>(<span class="t-str">'f1datasets/*.csv'</span>)
+f1_dfs <span class="t-op">=</span> {}
+
+<span class="t-kw">def</span> <span class="t-fn">time_to_ms</span>(time_str):
+    <span class="t-kw">if</span> pd.<span class="t-fn">isna</span>(time_str): <span class="t-kw">return</span> np.nan
+    parts <span class="t-op">=</span> <span class="t-fn">str</span>(time_str).<span class="t-fn">split</span>(<span class="t-str">':'</span>)
+    m, s <span class="t-op">=</span> <span class="t-fn">int</span>(parts[<span class="t-num">0</span>]), <span class="t-fn">float</span>(parts[<span class="t-num">1</span>])
+    <span class="t-kw">return</span> <span class="t-fn">int</span>((m <span class="t-op">*</span> <span class="t-num">60</span> <span class="t-op">+</span> s) <span class="t-op">*</span> <span class="t-num">1000</span>)
+
+scaler <span class="t-op">=</span> <span class="t-fn">StandardScaler</span>()
+X_scaled <span class="t-op">=</span> scaler.<span class="t-fn">fit_transform</span>(X_train)
+<span class="t-out">R² = 0.863 | AUC = 0.914</span></code></pre>
       </div>
     </div>
   </div>
 </section>
 
 <style>
+  /* ── Section wrapper ───────────────────────────────────── */
   .hero {
     position: relative;
-    min-height: 90vh;
+    min-height: calc(100vh - 3.5rem);
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding: 5rem 0;
   }
 
-  /* Skewed gradient wrapper — clip-path cuts the bottom edge diagonally */
-  .hero-gradient {
+  /* ── Ambient glows ─────────────────────────────────────── */
+  .hero-glow {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    clip-path: polygon(0 0, 100% 0, 100% 84%, 0 100%);
-    z-index: -1;
-    overflow: hidden;
+    pointer-events: none;
+    border-radius: 50%;
+  }
+  .hero-glow--left {
+    top: -15%;
+    left: -8%;
+    width: 55%;
+    height: 65%;
+    background: radial-gradient(ellipse at center,
+      rgba(192, 193, 255, 0.055) 0%,
+      transparent 65%);
+  }
+  .hero-glow--right {
+    bottom: -5%;
+    right: 5%;
+    width: 38%;
+    height: 50%;
+    background: radial-gradient(ellipse at center,
+      rgba(79, 219, 200, 0.04) 0%,
+      transparent 65%);
   }
 
-  /* Content sits above the gradient */
+  /* ── Content grid ──────────────────────────────────────── */
   .hero-content {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 7rem 1.5rem 9rem;
+    padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     align-items: center;
   }
 
-  /* ── Left column ───────────────────────────── */
+  /* ── Left column ───────────────────────────────────────── */
   .hero-eyebrow {
-    font-size: var(--text-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--color-accent);
-    margin: 0 0 1rem;
+    color: var(--color-text-tertiary);
+    margin: 0 0 1.25rem;
+  }
+
+  /* Teal glowing dot before eyebrow */
+  .hero-eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    box-shadow: 0 0 6px var(--color-secondary), 0 0 12px rgba(79,219,200,0.4);
+    flex-shrink: 0;
   }
 
   .hero-headline {
-    font-size: clamp(2.75rem, 6vw, var(--text-7xl));
+    font-size: clamp(2.75rem, 5.5vw, 4rem);
     font-weight: 700;
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
+    line-height: 1.06;
+    letter-spacing: -0.04em;
     color: var(--color-text-primary);
-    text-shadow: 0 1px 12px rgb(0 0 0 / 18%), 0 0 40px rgb(0 0 0 / 10%);
     margin: 0 0 1.5rem;
   }
 
   .hero-subhead {
-    font-size: var(--text-lg);
-    line-height: var(--leading-relaxed);
+    font-size: 1.0625rem;
+    line-height: 1.75;
     color: var(--color-text-secondary);
-    max-width: 44ch;
+    max-width: 46ch;
     margin: 0 0 2.5rem;
   }
 
   .hero-ctas {
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
     flex-wrap: wrap;
   }
 
+  /* Primary CTA — indigo filled */
   .cta-primary {
     display: inline-flex;
     align-items: center;
-    padding: 0.625rem 1.375rem;
+    padding: 0.6875rem 1.375rem;
     background-color: var(--color-accent);
-    color: oklch(0.98 0.005 90);
-    font-size: var(--text-sm);
+    color: var(--color-accent-on);
+    font-size: 0.9375rem;
     font-weight: 600;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     text-decoration: none;
     transition:
       background-color var(--duration-fast) var(--ease-out-expo),
-      transform         var(--duration-fast) var(--ease-out-expo);
+      box-shadow       var(--duration-fast) var(--ease-out-expo),
+      transform        var(--duration-fast) var(--ease-out-expo);
   }
-
   .cta-primary:hover {
     background-color: var(--color-accent-hover);
+    box-shadow: 0 0 28px rgba(192, 193, 255, 0.28);
     transform: translate3d(0, -1px, 0);
   }
 
-  .cta-primary:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 3px;
-  }
-
-  .cta-secondary {
+  /* Ghost CTA — bordered */
+  .cta-ghost {
     display: inline-flex;
     align-items: center;
-    padding: 0.625rem 1.375rem;
-    border: 1px solid var(--color-border-strong);
-    color: var(--color-text-primary);
-    font-size: var(--text-sm);
+    padding: 0.6875rem 1.375rem;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
     font-weight: 500;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     text-decoration: none;
-    background: transparent;
-    transition:
-      border-color var(--duration-fast) var(--ease-out-expo),
-      color        var(--duration-fast) var(--ease-out-expo),
-      transform    var(--duration-fast) var(--ease-out-expo);
-  }
-
-  .cta-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    transform: translate3d(0, -1px, 0);
-  }
-
-  .cta-secondary:focus-visible {
-    outline: 2px solid var(--color-focus);
-    outline-offset: 3px;
-  }
-
-  /* ── Terminal block ────────────────────────── */
-  .terminal {
-    background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
+    transition:
+      color         var(--duration-fast) var(--ease-out-expo),
+      border-color  var(--duration-fast) var(--ease-out-expo),
+      background-color var(--duration-fast) var(--ease-out-expo);
+  }
+  .cta-ghost:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-text-tertiary);
+    background-color: var(--color-surface-elevated);
+  }
+
+  /* ── Code editor ───────────────────────────────────────── */
+  .terminal {
+    background-color: #0d0d15;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: var(--shadow-card);
+    box-shadow:
+      0 32px 80px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.06) inset;
   }
 
   .terminal-bar {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.625rem 0.875rem;
-    border-bottom: 1px solid var(--color-border);
+    gap: 0.375rem;
+    padding: 0.625rem 1rem;
     background-color: var(--color-surface-elevated);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   .terminal-dot {
-    width: 0.625rem;
-    height: 0.625rem;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     flex-shrink: 0;
   }
-
   .dot-red    { background: #ff5f57; }
   .dot-yellow { background: #febc2e; }
   .dot-green  { background: #28c840; }
 
   .terminal-filename {
-    font-size: var(--text-xs);
+    font-size: 0.6875rem;
     color: var(--color-text-tertiary);
     font-family: var(--font-mono);
-    margin-left: 0.5rem;
+    letter-spacing: 0.02em;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .terminal-body {
     margin: 0;
-    padding: 1.25rem 1.375rem 1.5rem;
-    font-size: var(--text-sm);
+    padding: 1.25rem 1.5rem 1.5rem;
+    font-size: 0.8125rem;
     font-family: var(--font-mono);
-    line-height: 1.85;
+    line-height: 1.7;
     color: var(--color-text-secondary);
     overflow-x: auto;
     white-space: pre;
+    tab-size: 4;
   }
 
   .terminal-body code { font-family: inherit; }
 
-  .t-str     { color: var(--color-success); }
-  .t-num     { color: var(--color-warning); }
-  .t-comment { color: var(--color-text-tertiary); }
-  .t-output  {
-    color: var(--color-accent);
-    font-weight: 600;
-    display: block;
-  }
+  /* Syntax tokens */
+  .t-kw  { color: var(--color-accent); }
+  .t-fn  { color: var(--color-accent-dim); }
+  .t-str { color: var(--color-secondary); }
+  .t-num { color: var(--color-tertiary); }
+  .t-op  { color: var(--color-text-tertiary); }
+  .t-cmt { color: #5c5b6e; font-style: italic; }
+  .t-out { color: var(--color-secondary); display: block; }
 
-  /* ── Responsive ────────────────────────────── */
+  /* ── Responsive ────────────────────────────────────────── */
   @media (max-width: 960px) {
+    .hero {
+      min-height: auto;
+      padding: 4rem 0;
+    }
     .hero-content {
       grid-template-columns: 1fr;
-      gap: 3rem;
-      padding-bottom: 7rem;
+      gap: 2.5rem;
     }
-
-    .hero-right {
-      max-width: 520px;
-    }
+    .hero-right { max-width: 520px; }
+    .hero-headline { font-size: 2.625rem; }
   }
 
-  @media (max-width: 480px) {
-    .hero-right {
-      display: none;
-    }
+  @media (max-width: 640px) {
+    .hero { padding: 3rem 0; }
+    .hero-headline { font-size: 2.125rem; }
+    .hero-ctas { flex-direction: column; align-items: flex-start; }
+    .hero-right { display: none; }
   }
 </style>

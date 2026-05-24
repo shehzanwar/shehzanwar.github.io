@@ -13,7 +13,7 @@ repoUrl: https://github.com/shehzanwar/geopolitical-stress-commodity-pipeline
 featured: true
 order: 1
 coverIcon: lucide:globe
-publishedAt: 2025-03-01
+publishedAt: 2026-03-01
 status: shipped
 ---
 

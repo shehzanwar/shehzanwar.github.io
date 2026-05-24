@@ -1,0 +1,365 @@
+---
+// src/pages/experience.astro
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import { buildMeta } from '../lib/seo';
+
+const meta = buildMeta({
+  title: 'Experience — Shehzad Anwar',
+  description:
+    'Professional experience, education, and technical background of Shehzad Anwar — data scientist and ML engineer pursuing MS Analytics at Georgia Tech.',
+});
+
+const experienceEntries = await getCollection('experience');
+const experience = experienceEntries.sort(
+  (a, b) => b.data.start.getTime() - a.data.start.getTime()
+);
+
+function formatDateRange(start: Date, end?: Date | null): string {
+  const opts: Intl.DateTimeFormatOptions = { month: 'short', year: 'numeric' };
+  const s = start.toLocaleDateString('en-US', opts);
+  const e = end ? end.toLocaleDateString('en-US', opts) : 'Present';
+  return `${s} – ${e}`;
+}
+---
+
+<PageLayout meta={meta}>
+  <div class="page-section">
+
+    <!-- Page header -->
+    <header class="exp-page-header">
+      <p class="page-eyebrow">Experience</p>
+      <h1 class="page-title">Background</h1>
+      <p class="page-subtitle">
+        Professional roles, graduate coursework, and the path that connects
+        computer science fundamentals to applied machine learning.
+      </p>
+    </header>
+
+    <!-- Education -->
+    <section aria-labelledby="education-heading" class="exp-section">
+      <h2 id="education-heading" class="section-title" style="margin-bottom: 2rem;">Education</h2>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <p class="timeline-dates">Aug 2024 – Present</p>
+            <p class="timeline-location">Atlanta, GA (Online)</p>
+            <span class="timeline-type">Graduate</span>
+          </div>
+          <div class="timeline-body">
+            <h3 class="timeline-role">MS in Analytics (OMSA)</h3>
+            <p class="timeline-org">Georgia Institute of Technology</p>
+            <ul class="timeline-highlights">
+              <li class="timeline-highlight">Specialisation in Computational Data Analysis — coursework spans statistical learning, machine learning, and data engineering.</li>
+              <li class="timeline-highlight">ISYE 7406: Data Mining &amp; Statistical Learning — applied PCA, LDA, and ensemble methods to F1 telemetry data.</li>
+              <li class="timeline-highlight">ISYE 6740: Computational Data Analysis — built multi-class classifiers for Premier League match-outcome prediction.</li>
+            </ul>
+            <div class="timeline-chips">
+              <span class="chip">Statistical Learning</span>
+              <span class="chip">Machine Learning</span>
+              <span class="chip">Python</span>
+              <span class="chip">R</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-meta">
+            <p class="timeline-dates">Aug 2020 – May 2024</p>
+            <p class="timeline-location">Tempe, AZ</p>
+            <span class="timeline-type">Undergraduate</span>
+          </div>
+          <div class="timeline-body">
+            <h3 class="timeline-role">BS in Computer Science</h3>
+            <p class="timeline-org">Arizona State University</p>
+            <ul class="timeline-highlights">
+              <li class="timeline-highlight">Graduated cum laude.</li>
+              <li class="timeline-highlight">Core coursework: Data Structures, Algorithms, Database Systems, Software Engineering, Operating Systems.</li>
+              <li class="timeline-highlight">Senior capstone project: predictive modelling pipeline for structured tabular data.</li>
+            </ul>
+            <div class="timeline-chips">
+              <span class="chip">Java</span>
+              <span class="chip">Python</span>
+              <span class="chip">SQL</span>
+              <span class="chip">Data Structures</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Work Experience -->
+    <section aria-labelledby="work-heading" class="exp-section">
+      <h2 id="work-heading" class="section-title" style="margin-bottom: 2rem;">Work Experience</h2>
+
+      <div class="timeline">
+        {experience.map((entry) => (
+          <div class="timeline-item">
+            <div class="timeline-meta">
+              <p class="timeline-dates">
+                {formatDateRange(entry.data.start, entry.data.end)}
+              </p>
+              <p class="timeline-location">{entry.data.location}</p>
+              <span class="timeline-type">Professional</span>
+            </div>
+            <div class="timeline-body">
+              <h3 class="timeline-role">{entry.data.role}</h3>
+              <p class="timeline-org">{entry.data.company}</p>
+              <ul class="timeline-highlights">
+                {entry.data.highlights.map((h: string) => (
+                  <li class="timeline-highlight">{h}</li>
+                ))}
+              </ul>
+              <div class="timeline-chips">
+                {entry.data.skills.map((s: string) => (
+                  <span class="chip">{s}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Skills snapshot -->
+    <section aria-labelledby="skills-heading" class="exp-section">
+      <h2 id="skills-heading" class="section-title" style="margin-bottom: 1.75rem;">Skills</h2>
+
+      <div class="skills-grid">
+        <div class="skill-group">
+          <h3 class="skill-group-label">Languages</h3>
+          <ul class="skill-list">
+            <li>Python</li>
+            <li>SQL</li>
+            <li>R</li>
+            <li>Java</li>
+            <li>Visual Basic / .NET</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <h3 class="skill-group-label">ML &amp; Analytics</h3>
+          <ul class="skill-list">
+            <li>Scikit-Learn</li>
+            <li>Pandas &amp; NumPy</li>
+            <li>PCA / LDA</li>
+            <li>Random Forests</li>
+            <li>Gradient Boosting</li>
+          </ul>
+        </div>
+
+        <div class="skill-group">
+          <h3 class="skill-group-label">Tools &amp; Platforms</h3>
+          <ul class="skill-list">
+            <li>FastF1</li>
+            <li>Git / GitHub</li>
+            <li>Jupyter Notebooks</li>
+            <li>PostgreSQL / MySQL</li>
+            <li>REST APIs</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</PageLayout>
+
+<style>
+  /* ── Page header ─────────────────────────────────────────── */
+  .exp-page-header {
+    margin-bottom: 4rem;
+    max-width: 60ch;
+  }
+
+  .page-eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: var(--color-text-primary);
+    line-height: 1.08;
+    margin-bottom: 1.25rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  /* ── Sections ────────────────────────────────────────────── */
+  .exp-section {
+    margin-bottom: 5rem;
+  }
+  .exp-section:last-child { margin-bottom: 0; }
+
+  /* ── Timeline ────────────────────────────────────────────── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 13rem 1fr;
+    gap: 2.5rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-meta {
+    padding-top: 0.2rem;
+  }
+
+  .timeline-dates {
+    font-size: 0.8125rem;
+    font-family: var(--font-mono);
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .timeline-location {
+    font-size: 0.75rem;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-type {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    background-color: rgba(192, 193, 255, 0.08);
+    border: 1px solid rgba(192, 193, 255, 0.15);
+    border-radius: var(--radius-sm);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .timeline-body {}
+
+  .timeline-role {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+  }
+
+  .timeline-org {
+    font-size: 0.9375rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .timeline-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timeline-highlight {
+    font-size: var(--text-sm);
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+    padding-left: 1.25rem;
+    position: relative;
+  }
+  .timeline-highlight::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--color-text-tertiary);
+  }
+
+  .timeline-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+  }
+
+  /* ── Skills grid ─────────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .skill-group {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.375rem 1.5rem;
+  }
+
+  .skill-group-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 1rem;
+  }
+
+  .skill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skill-list li {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    padding-left: 0.875rem;
+    position: relative;
+  }
+  .skill-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+  }
+
+  /* ── Responsive ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .timeline-item {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .skills-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

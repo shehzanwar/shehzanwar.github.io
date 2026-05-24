@@ -1,5 +1,6 @@
 ---
 // src/components/primitives/BentoCard.astro
+// Dark card with top inner-glow border — Obsidian Precision design system.
 interface Props {
   colSpan?: number;
   rowSpan?: number;
@@ -38,33 +39,51 @@ const { colSpan = 4, rowSpan = 1, href, label, class: className } = Astro.props;
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 1.5rem;
+    padding: 1.625rem;
     position: relative;
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-md);
     text-decoration: none;
     color: inherit;
     box-shadow: var(--shadow-card);
+    overflow: hidden;
     will-change: transform;
     transition:
-      transform    var(--duration-base) var(--ease-out-expo),
-      box-shadow   var(--duration-base) var(--ease-out-expo),
-      border-color var(--duration-base) var(--ease-out-expo);
+      transform      var(--duration-base) var(--ease-out-expo),
+      box-shadow     var(--duration-base) var(--ease-out-expo),
+      border-color   var(--duration-base) var(--ease-out-expo);
+  }
+
+  /* Top edge inner glow — separates card from background */
+  .bento-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(192, 193, 255, 0.22) 50%,
+      transparent 100%
+    );
+    pointer-events: none;
   }
 
   .bento-inner:hover,
   .bento-inner:focus-visible {
-    transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -2px, 0);
     box-shadow:
       var(--shadow-card-hover),
-      inset 0 0 0 1px oklch(0.44 0.14 240 / 0.35);
-    border-color: var(--color-accent);
+      0 0 0 1px rgba(192, 193, 255, 0.1);
+    border-color: rgba(192, 193, 255, 0.22);
     outline: none;
   }
 
   .bento-inner:focus-visible {
-    outline: 2px solid var(--color-focus);
+    outline: 2px solid rgba(192, 193, 255, 0.55);
     outline-offset: 2px;
   }
 
@@ -73,7 +92,6 @@ const { colSpan = 4, rowSpan = 1, href, label, class: className } = Astro.props;
       will-change: auto;
       transition: opacity var(--duration-fast) var(--ease-out-expo);
     }
-
     .bento-inner:hover,
     .bento-inner:focus-visible {
       transform: none;
@@ -81,7 +99,7 @@ const { colSpan = 4, rowSpan = 1, href, label, class: className } = Astro.props;
     }
   }
 
-  /* Clamp spans to available grid columns on medium screens */
+  /* Clamp span on medium screens */
   @media (max-width: 1024px) {
     .bento-card {
       grid-column: span min(var(--col-span), 6);

@@ -1,53 +1,32 @@
 ---
 // src/components/sections/Footer.astro
-// M12 BOUNDARY: no newsletter, no "Made with ❤️", no back-to-top button.
 const year = new Date().getFullYear();
 
 const footerLinks = [
-  { label: 'Projects', href: '/projects' },
-  { label: 'About',    href: '/about'   },
-  { label: 'Contact',  href: '/contact' },
+  { label: 'About',      href: '/about'      },
+  { label: 'Projects',   href: '/projects'   },
+  { label: 'Experience', href: '/experience' },
+  { label: 'Contact',    href: '/contact'    },
 ];
 ---
 
-<footer
-  style="border-top: 1px solid var(--color-border); background-color: var(--color-surface);"
->
-  <div
-    style="
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    "
-  >
-    <!-- Copyright -->
-    <span
-      style="
-        font-size: var(--text-sm);
-        color: var(--color-text-tertiary);
-        font-variant-numeric: tabular-nums;
-      "
-    >
-      &copy; {year} Shehzad Anwar
+<footer style="border-top: 1px solid rgba(255,255,255,0.07); background-color: var(--color-background);">
+  <div style="
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  ">
+    <span style="font-size: var(--text-sm); color: var(--color-text-tertiary);">
+      &copy; {year} Shehzad Anwar. Built with precision.
     </span>
 
-    <!-- Footer nav -->
     <nav aria-label="Footer navigation">
-      <ul
-        style="
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.25rem;
-        "
-      >
+      <ul style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0.125rem;">
         {footerLinks.map(({ label, href }) => (
           <li>
             <a
@@ -55,13 +34,14 @@ const footerLinks = [
               style="
                 display: block;
                 padding: 0.25rem 0.625rem;
-                border-radius: var(--radius-md);
+                border-radius: var(--radius-sm);
                 font-size: var(--text-sm);
-                color: var(--color-text-secondary);
+                color: var(--color-text-tertiary);
                 text-decoration: none;
-                transition: color var(--duration-fast) var(--ease-out-expo),
-                            background-color var(--duration-fast) var(--ease-out-expo);
+                transition: color var(--duration-fast) var(--ease-out-expo);
               "
+              onmouseover="this.style.color='var(--color-text-primary)'"
+              onmouseout="this.style.color='var(--color-text-tertiary)'"
             >
               {label}
             </a>

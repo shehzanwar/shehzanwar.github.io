@@ -5,9 +5,6 @@
 ---
 
 <section class="hero" aria-labelledby="hero-headline">
-  <!-- Ambient background glows -->
-  <div class="hero-glow hero-glow--left"  aria-hidden="true"></div>
-  <div class="hero-glow hero-glow--right" aria-hidden="true"></div>
 
   <div class="hero-content">
     <!-- Left: copy -->
@@ -72,34 +69,35 @@ X_scaled <span class="t-op">=</span> scaler.<span class="t-fn">fit_transform</sp
     align-items: center;
     overflow: hidden;
     padding: 5rem 0;
+    /* Multi-stop radial gradients rendered in float before compositing —
+       eliminates the 8-bit integer stepping that filter:blur produces */
+    background:
+      radial-gradient(ellipse 900px 700px at -8% 50%,
+        rgba(192, 193, 255, 0.10) 0%,
+        rgba(192, 193, 255, 0.07) 20%,
+        rgba(192, 193, 255, 0.04) 40%,
+        rgba(192, 193, 255, 0.02) 58%,
+        rgba(192, 193, 255, 0.005) 72%,
+        transparent 85%),
+      radial-gradient(ellipse 750px 620px at 108% 78%,
+        rgba(79, 219, 200, 0.08) 0%,
+        rgba(79, 219, 200, 0.05) 22%,
+        rgba(79, 219, 200, 0.025) 44%,
+        rgba(79, 219, 200, 0.007) 64%,
+        transparent 80%);
   }
 
-  /* ── Ambient glows ─────────────────────────────────────── */
-  .hero-glow {
+  /* Noise grain — dithers residual quantization */
+  .hero::after {
+    content: '';
     position: absolute;
+    inset: 0;
+    z-index: 0;
     pointer-events: none;
-  }
-  .hero-glow--left {
-    top: -30%;
-    left: -15%;
-    width: 70%;
-    height: 90%;
-    background: radial-gradient(ellipse at 38% 42%,
-      rgba(192, 193, 255, 0.075) 0%,
-      rgba(192, 193, 255, 0.02) 45%,
-      transparent 70%);
-    filter: blur(55px);
-  }
-  .hero-glow--right {
-    bottom: -25%;
-    right: -8%;
-    width: 50%;
-    height: 75%;
-    background: radial-gradient(ellipse at 62% 58%,
-      rgba(79, 219, 200, 0.06) 0%,
-      rgba(79, 219, 200, 0.015) 40%,
-      transparent 70%);
-    filter: blur(55px);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
   }
 
   /* ── Content grid ──────────────────────────────────────── */

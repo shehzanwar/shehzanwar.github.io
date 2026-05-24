@@ -4,11 +4,13 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'UTC',
 });
 
 const monthYearFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
-  month: 'long',
+  month: 'short',
+  timeZone: 'UTC',
 });
 
 export function formatDate(date: Date | string): string {

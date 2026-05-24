@@ -49,6 +49,7 @@ const experience = defineCollection({
     .object({
       company:    z.string().min(1).max(120),
       role:       z.string().min(1).max(100),
+      type:       z.enum(['Professional', 'Capstone', 'Internship']).default('Professional'),
       start:      z.coerce.date(),
       // null = current role; undefined = field omitted (treated as current)
       end:        z.coerce.date().nullable().optional(),

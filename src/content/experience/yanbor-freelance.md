@@ -1,6 +1,7 @@
 ---
 company: Yanbor LLC.
-role: Freelance Developer
+role: Software Developer
+type: Capstone
 start: 2023-01-01
 end: 2023-12-01
 location: Tempe, AZ

@@ -78,25 +78,28 @@ X_scaled <span class="t-op">=</span> scaler.<span class="t-fn">fit_transform</sp
   .hero-glow {
     position: absolute;
     pointer-events: none;
-    border-radius: 50%;
   }
   .hero-glow--left {
-    top: -15%;
-    left: -8%;
-    width: 55%;
-    height: 65%;
-    background: radial-gradient(ellipse at center,
-      rgba(192, 193, 255, 0.055) 0%,
-      transparent 65%);
+    top: -30%;
+    left: -15%;
+    width: 70%;
+    height: 90%;
+    background: radial-gradient(ellipse at 38% 42%,
+      rgba(192, 193, 255, 0.075) 0%,
+      rgba(192, 193, 255, 0.02) 45%,
+      transparent 70%);
+    filter: blur(55px);
   }
   .hero-glow--right {
-    bottom: -5%;
-    right: 5%;
-    width: 38%;
-    height: 50%;
-    background: radial-gradient(ellipse at center,
-      rgba(79, 219, 200, 0.04) 0%,
-      transparent 65%);
+    bottom: -25%;
+    right: -8%;
+    width: 50%;
+    height: 75%;
+    background: radial-gradient(ellipse at 62% 58%,
+      rgba(79, 219, 200, 0.06) 0%,
+      rgba(79, 219, 200, 0.015) 40%,
+      transparent 70%);
+    filter: blur(55px);
   }
 
   /* ── Content grid ──────────────────────────────────────── */

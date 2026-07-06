@@ -10,6 +10,22 @@ interface Props {
 
 const { meta, lang = 'en' } = Astro.props;
 const canonical = meta.canonical ?? Astro.url.href;
+const ogImage   = meta.ogImage ?? new URL('/og-image.svg', Astro.site).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Shehzad Anwar',
+  url: 'https://shehzanwar.github.io',
+  sameAs: [
+    'https://github.com/shehzanwar',
+    'https://linkedin.com/in/shehzanwar',
+  ],
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'Georgia Institute of Technology' },
+    { '@type': 'CollegeOrUniversity', name: 'Arizona State University' },
+  ],
+};
 ---
 
 <!doctype html>
@@ -36,10 +52,19 @@ const canonical = meta.canonical ?? Astro.url.href;
     <meta property="og:title"       content={meta.ogTitle} />
     <meta property="og:description" content={meta.ogDescription} />
     <meta property="og:url"         content={canonical} />
-    {meta.ogImage && <meta property="og:image" content={meta.ogImage} />}
+    <meta property="og:image"       content={ogImage} />
     {meta.articlePublishedTime && (
       <meta property="article:published_time" content={meta.articlePublishedTime} />
     )}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={meta.ogTitle} />
+    <meta name="twitter:description" content={meta.ogDescription} />
+    <meta name="twitter:image"       content={ogImage} />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Favicons -->
     <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />

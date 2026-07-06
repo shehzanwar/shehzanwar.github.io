@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="g1" cx="0%" cy="50%" r="65%" gradientUnits="userSpaceOnUse" fx="0" fy="315">
+      <stop offset="0%"   stop-color="#c0c1ff" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#c0c1ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="100%" cy="85%" r="55%" gradientUnits="userSpaceOnUse" fx="1200" fy="535">
+      <stop offset="0%"   stop-color="#4fdbc8" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#4fdbc8" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#13131b"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+
+  <!-- Left accent bar -->
+  <rect x="60" y="140" width="3" height="200" rx="1.5" fill="#c0c1ff" opacity="0.35"/>
+
+  <!-- Wordmark -->
+  <text x="76" y="108" font-family="system-ui,-apple-system,sans-serif" font-weight="700" font-size="28" fill="#c0c1ff" letter-spacing="-1">SA.</text>
+
+  <!-- Name -->
+  <text x="76" y="228" font-family="system-ui,-apple-system,sans-serif" font-weight="700" font-size="74" fill="#f1f1f3" letter-spacing="-3">Shehzad Anwar</text>
+
+  <!-- Role -->
+  <text x="76" y="302" font-family="system-ui,-apple-system,sans-serif" font-weight="400" font-size="34" fill="#a1a1b0" letter-spacing="-0.5">Data &amp; Product Analytics</text>
+
+  <!-- Teal dot + credential -->
+  <circle cx="76" cy="368" r="5" fill="#4fdbc8"/>
+  <text x="96" y="374" font-family="system-ui,-apple-system,sans-serif" font-weight="400" font-size="22" fill="#6b6b8a">MS Analytics · Georgia Tech</text>
+
+  <!-- Divider -->
+  <rect x="76" y="410" width="100" height="1.5" rx="0.75" fill="#c0c1ff" opacity="0.25"/>
+
+  <!-- URL -->
+  <text x="76" y="450" font-family="system-ui,-apple-system,sans-serif" font-weight="400" font-size="20" fill="#4b4b5e" letter-spacing="0.02em">shehzanwar.github.io</text>
+
+  <!-- Decorative right-side grid lines -->
+  <line x1="820" y1="80"  x2="820" y2="550" stroke="#c0c1ff" stroke-width="1" opacity="0.05"/>
+  <line x1="920" y1="80"  x2="920" y2="550" stroke="#c0c1ff" stroke-width="1" opacity="0.04"/>
+  <line x1="1020" y1="80" x2="1020" y2="550" stroke="#c0c1ff" stroke-width="1" opacity="0.03"/>
+  <line x1="820" y1="180" x2="1140" y2="180" stroke="#c0c1ff" stroke-width="1" opacity="0.04"/>
+  <line x1="820" y1="280" x2="1140" y2="280" stroke="#c0c1ff" stroke-width="1" opacity="0.04"/>
+  <line x1="820" y1="380" x2="1140" y2="380" stroke="#c0c1ff" stroke-width="1" opacity="0.04"/>
+  <line x1="820" y1="480" x2="1140" y2="480" stroke="#c0c1ff" stroke-width="1" opacity="0.03"/>
+
+  <!-- Accent dot cluster -->
+  <circle cx="980"  cy="230" r="3" fill="#c0c1ff" opacity="0.25"/>
+  <circle cx="1060" cy="310" r="3" fill="#4fdbc8" opacity="0.22"/>
+  <circle cx="1100" cy="200" r="2" fill="#c0c1ff" opacity="0.18"/>
+  <circle cx="870"  cy="420" r="2" fill="#4fdbc8" opacity="0.18"/>
+  <circle cx="950"  cy="470" r="3" fill="#c0c1ff" opacity="0.15"/>
+</svg>

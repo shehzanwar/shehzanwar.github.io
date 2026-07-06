@@ -64,9 +64,9 @@ function ProjectsPanelContent() {
   return (
     <div style={{ padding: '1.25rem 1.5rem', width: 440, boxSizing: 'border-box' }}>
       <SectionLabel>Featured</SectionLabel>
+      <PanelLink href="/projects/truescout"                              title="TrueScout — World Cup 2026"      sub="Bayesian Ratings & Monte Carlo Simulation"    />
       <PanelLink href="/projects/geopolitical-stress-commodity-pipeline" title="Geopolitical Stress Pipeline"    sub="Data Engineering & API Integration"          />
       <PanelLink href="/projects/f1-prediction"                          title="Formula One: Statistical Learning" sub="Statistical Modeling & Telemetry"           />
-      <PanelLink href="/projects/premier-league-classification"          title="Forecasting Football"            sub="Classification & Predictive Analytics"        />
       <div style={{ marginTop: '0.75rem', paddingLeft: '0.75rem' }}>
         <a href="/projects" style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-accent)', textDecoration: 'none' }}>
           All projects <span aria-hidden="true">→</span>
@@ -416,9 +416,9 @@ export default function Nav() {
           </SheetSection>
 
           <SheetSection label="Featured Projects">
+            <SheetLink href="/projects/truescout" onClick={closeMobile} size="sm">TrueScout — World Cup 2026</SheetLink>
             <SheetLink href="/projects/geopolitical-stress-commodity-pipeline" onClick={closeMobile} size="sm">Geopolitical Stress Pipeline</SheetLink>
             <SheetLink href="/projects/f1-prediction" onClick={closeMobile} size="sm">Formula One: Statistical Learning</SheetLink>
-            <SheetLink href="/projects/premier-league-classification" onClick={closeMobile} size="sm">Forecasting Football</SheetLink>
           </SheetSection>
 
           <div style={{ marginTop: '0.5rem' }}>

@@ -1,7 +1,7 @@
 ---
 title: Forecasting Football
 slug: premier-league-classification
-summary: A comparative analysis of classification models to predict Premier League match outcomes using historical match statistics and engineered features.
+summary: Classification models to predict Premier League match outcomes — 54% accuracy (Lasso Regression) outperforming the 45% dummy baseline, with EDA-driven feature selection and 10-fold cross-validation.
 description: Evaluated multiple classification models on Premier League match data with EDA-driven feature selection and 10-fold cross-validation. Lasso Regression achieved 54% accuracy, outperforming the 45% baseline dummy model for match outcome prediction.
 category: Machine Learning
 stack:
@@ -10,7 +10,7 @@ stack:
   - EDA
 repoUrl: https://github.com/shehzanwar/CDA6740/tree/main/Project
 featured: true
-order: 3
+order: 4
 coverIcon: lucide:trophy
 publishedAt: 2025-11-30
 status: shipped

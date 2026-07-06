@@ -9,15 +9,16 @@
   <div class="hero-content">
     <!-- Left: copy -->
     <div class="hero-left">
-      <p class="hero-eyebrow">Data Analytics &amp; Machine Learning</p>
+      <p class="hero-eyebrow">Data &amp; Product Analytics</p>
 
       <h1 id="hero-headline" class="hero-headline">
         Shehzad<br />Anwar
       </h1>
 
       <p class="hero-subhead">
-        Building predictive models, data processing pipelines, and software
-        applications. Currently pursuing an MS in Analytics at Georgia Tech.
+        Building decision-ready analytics products — predictive models,
+        self-running pipelines, and insight surfaces that inform real decisions.
+        Pursuing an MS in Analytics at Georgia Tech.
       </p>
 
       <div class="hero-ctas">
@@ -35,26 +36,22 @@
           <span class="terminal-dot dot-red"></span>
           <span class="terminal-dot dot-yellow"></span>
           <span class="terminal-dot dot-green"></span>
-          <span class="terminal-filename">f1_script.py</span>
+          <span class="terminal-filename">truescout_sim.py</span>
         </div>
-        <pre class="terminal-body"><code><span class="t-kw">import</span> pandas <span class="t-kw">as</span> pd
-<span class="t-kw">import</span> numpy <span class="t-kw">as</span> np
-<span class="t-kw">import</span> glob, os
-<span class="t-kw">from</span> sklearn.preprocessing <span class="t-kw">import</span> StandardScaler
+        <pre class="terminal-body"><code><span class="t-kw">import</span> pymc <span class="t-kw">as</span> pm
+<span class="t-kw">from</span> truescout.sim <span class="t-kw">import</span> simulate_bracket, evaluate
 
-<span class="t-cmt"># Load all F1 CSV datasets</span>
-file_paths <span class="t-op">=</span> glob.<span class="t-fn">glob</span>(<span class="t-str">'f1datasets/*.csv'</span>)
-f1_dfs <span class="t-op">=</span> {}
+<span class="t-cmt"># Hierarchical Bayesian ratings — partial pooling</span>
+<span class="t-kw">with</span> pm.<span class="t-fn">Model</span>() <span class="t-kw">as</span> rating_model:
+    mu  <span class="t-op">=</span> pm.<span class="t-fn">Normal</span>(<span class="t-str">"mu_global"</span>, <span class="t-num">0</span>, <span class="t-num">1</span>)
+    sig <span class="t-op">=</span> pm.<span class="t-fn">HalfNormal</span>(<span class="t-str">"sigma_league"</span>, <span class="t-num">1</span>)
+    lx  <span class="t-op">=</span> pm.<span class="t-fn">Normal</span>(<span class="t-str">"league_offset"</span>, mu, sig,
+                    shape<span class="t-op">=</span>n_leagues)
+    idata <span class="t-op">=</span> pm.<span class="t-fn">sample</span>(<span class="t-num">1000</span>, tune<span class="t-op">=</span><span class="t-num">500</span>)
 
-<span class="t-kw">def</span> <span class="t-fn">time_to_ms</span>(time_str):
-    <span class="t-kw">if</span> pd.<span class="t-fn">isna</span>(time_str): <span class="t-kw">return</span> np.nan
-    parts <span class="t-op">=</span> <span class="t-fn">str</span>(time_str).<span class="t-fn">split</span>(<span class="t-str">':'</span>)
-    m, s <span class="t-op">=</span> <span class="t-fn">int</span>(parts[<span class="t-num">0</span>]), <span class="t-fn">float</span>(parts[<span class="t-num">1</span>])
-    <span class="t-kw">return</span> <span class="t-fn">int</span>((m <span class="t-op">*</span> <span class="t-num">60</span> <span class="t-op">+</span> s) <span class="t-op">*</span> <span class="t-num">1000</span>)
-
-scaler <span class="t-op">=</span> <span class="t-fn">StandardScaler</span>()
-X_scaled <span class="t-op">=</span> scaler.<span class="t-fn">fit_transform</span>(X_train)
-<span class="t-out">R² = 0.863 | AUC = 0.914</span></code></pre>
+probs <span class="t-op">=</span> <span class="t-fn">simulate_bracket</span>(n<span class="t-op">=</span><span class="t-num">100_000</span>)
+brier <span class="t-op">=</span> <span class="t-fn">evaluate</span>(probs, outcomes)
+<span class="t-out">Brier: 0.214  ·  market baseline: 0.228</span></code></pre>
       </div>
     </div>
   </div>

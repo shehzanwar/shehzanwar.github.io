@@ -1,6 +1,7 @@
 ﻿node_modules/
-node_modules/
 dist/
 .claude/
 source-resume.txt
+screen.png
+*.zip
 

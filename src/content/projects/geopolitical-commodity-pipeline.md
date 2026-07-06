@@ -1,7 +1,7 @@
 ---
 title: Geopolitical Stress Commodity Pipeline
 slug: geopolitical-stress-commodity-pipeline
-summary: A data pipeline that aggregates geopolitical stress indices and correlates them with global commodity price fluctuations to surface macroeconomic signals.
+summary: Modular pipeline ingesting geopolitical stress indices and commodity price feeds, applying 1–30 day lag-correlation analysis to produce structured datasets for macroeconomic signal testing.
 description: Engineered a modular data processing pipeline to aggregate, clean, and analyze geopolitical event data against commodity market fluctuations, producing structured datasets for downstream analysis.
 category: Data Engineering
 stack:
@@ -11,7 +11,7 @@ stack:
   - API Integration
 repoUrl: https://github.com/shehzanwar/geopolitical-stress-commodity-pipeline
 featured: true
-order: 1
+order: 2
 coverIcon: lucide:globe
 publishedAt: 2026-03-01
 status: shipped

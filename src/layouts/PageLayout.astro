@@ -14,9 +14,29 @@ const { meta, lang } = Astro.props;
 ---
 
 <BaseLayout meta={meta} lang={lang}>
+  <a href="#main-content" class="skip-link">Skip to content</a>
   <Nav client:load />
   <main id="main-content">
     <slot />
   </main>
   <Footer />
 </BaseLayout>
+
+<style>
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 1rem;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-accent);
+    color: var(--color-accent-on);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+  }
+  .skip-link:focus-visible {
+    left: 1rem;
+  }
+</style>

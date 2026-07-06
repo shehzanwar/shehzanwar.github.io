@@ -23,7 +23,8 @@ const total = sorted.length;
 const spanMap =
   total === 1 ? [{ col: 12, row: 2 }] :
   total === 2 ? [{ col: 6, row: 2 }, { col: 6, row: 2 }] :
-                [{ col: 8, row: 2 }, { col: 4, row: 2 }, { col: 4, row: 1 }];
+  total === 3 ? [{ col: 8, row: 2 }, { col: 4, row: 2 }, { col: 4, row: 1 }] :
+                [{ col: 8, row: 2 }, { col: 4, row: 2 }, { col: 6, row: 1 }, { col: 6, row: 1 }];
 
 const statusLabel: Record<string, string> = {
   shipped:     'Shipped',
@@ -81,6 +82,16 @@ const statusLabel: Record<string, string> = {
                     </div>
                     <div class="card-footer">
                       <a href={detailHref} class="card-detail-link">View project →</a>
+                      {project.data.liveUrl && (
+                        <a
+                          href={project.data.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="card-live-link"
+                        >
+                          Live ↗
+                        </a>
+                      )}
                       {project.data.repoUrl && (
                         <a
                           href={project.data.repoUrl}
@@ -206,6 +217,15 @@ const statusLabel: Record<string, string> = {
     transition: color var(--duration-fast) var(--ease-out-expo);
   }
   .card-detail-link:hover { color: var(--color-accent-hover); }
+
+  .card-live-link {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-secondary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out-expo);
+  }
+  .card-live-link:hover { color: var(--color-text-primary); }
 
   .card-source-link {
     display: inline-flex;

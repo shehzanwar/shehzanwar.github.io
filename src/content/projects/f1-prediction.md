@@ -11,7 +11,7 @@ stack:
   - Scikit-Learn
 repoUrl: https://github.com/shehzanwar/DMSL7406/tree/main/Project
 featured: true
-order: 2
+order: 3
 coverIcon: lucide:flag
 publishedAt: 2025-11-15
 status: shipped

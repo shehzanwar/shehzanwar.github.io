@@ -17,11 +17,11 @@ const grouped = Object.fromEntries(
 ---
 
 <div class="skills-categories">
-  {CATEGORIES.filter(cat => grouped[cat].length > 0).map(cat => (
+  {CATEGORIES.filter(cat => (grouped[cat] ?? []).length > 0).map(cat => (
     <div class="skill-group">
       <h3 class="group-label">{cat}</h3>
       <ul class="skill-list" role="list">
-        {grouped[cat].map(skill => (
+        {(grouped[cat] ?? []).map(skill => (
           <li class="skill-chip">
             <span class="skill-icon" aria-hidden="true">
               <Icon name={skill.data.iconRef} size={14} />

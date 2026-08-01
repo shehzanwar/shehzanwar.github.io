@@ -1,5 +1,6 @@
 ---
 // src/layouts/PageLayout.astro
+import { getCollection } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Nav from '../components/islands/Nav';
 import Footer from '../components/sections/Footer.astro';
@@ -11,11 +12,18 @@ interface Props {
 }
 
 const { meta, lang } = Astro.props;
+
+const allProjects = await getCollection('projects');
+const navProjects = allProjects
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3)
+  .map((p) => ({ slug: p.data.slug, title: p.data.title, category: p.data.category }));
 ---
 
 <BaseLayout meta={meta} lang={lang}>
   <a href="#main-content" class="skip-link">Skip to content</a>
-  <Nav client:load />
+  <Nav client:load navProjects={navProjects} />
   <main id="main-content">
     <slot />
   </main>

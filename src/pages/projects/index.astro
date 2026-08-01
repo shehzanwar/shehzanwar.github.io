@@ -40,7 +40,7 @@ const statusLabel: Record<string, string> = {
       </p>
     </header>
 
-    <BentoGrid>
+    <BentoGrid class="reveal-on-scroll">
       {projects.map((project) => (
         <BentoCard
           href={`/projects/${project.data.slug}`}

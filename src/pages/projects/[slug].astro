@@ -22,10 +22,25 @@ const { Content } = await render(entry);
 const meta = buildMeta({
   title: `${entry.data.title} — Projects`,
   description: entry.data.summary,
+  ogType: 'article',
+  publishedAt: entry.data.publishedAt,
 });
+
+const softwareSourceCodeLd = entry.data.repoUrl && {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: entry.data.title,
+  description: entry.data.summary,
+  codeRepository: entry.data.repoUrl,
+  programmingLanguage: entry.data.stack,
+  ...(entry.data.liveUrl ? { url: entry.data.liveUrl } : {}),
+};
 ---
 
 <PageLayout meta={meta}>
+  {softwareSourceCodeLd && (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(softwareSourceCodeLd)} />
+  )}
   <div class="page-section">
     <a href="/projects" class="back-link">← All projects</a>
     <ProjectDetail entry={entry}>

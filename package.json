@@ -8,7 +8,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "typecheck": "astro check",
+    "linkcheck": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",
@@ -22,6 +24,7 @@
     "tailwind-merge": "^2.5.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@iconify-json/lucide": "^1.1.0",
     "@tailwindcss/vite": "^4.0.0",
     "@types/react": "^19.0.0",

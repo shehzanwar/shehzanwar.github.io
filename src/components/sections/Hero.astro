@@ -2,6 +2,10 @@
 // src/components/sections/Hero.astro
 // Hero section — Obsidian Precision design system.
 // Left: eyebrow + headline + bio + CTAs. Right: code editor window (decorative).
+import { getEntry } from 'astro:content';
+
+const siteMeta = await getEntry('siteMeta', 'index');
+const headline = siteMeta?.data.headline ?? 'Machine Learning & Data Analyst';
 ---
 
 <section class="hero" aria-labelledby="hero-headline">
@@ -9,7 +13,7 @@
   <div class="hero-content">
     <!-- Left: copy -->
     <div class="hero-left">
-      <p class="hero-eyebrow">Data &amp; Product Analytics</p>
+      <p class="hero-eyebrow">{headline}</p>
 
       <h1 id="hero-headline" class="hero-headline">
         Shehzad<br />Anwar
@@ -38,20 +42,18 @@
           <span class="terminal-dot dot-green"></span>
           <span class="terminal-filename">truescout_sim.py</span>
         </div>
-        <pre class="terminal-body"><code><span class="t-kw">import</span> pymc <span class="t-kw">as</span> pm
+        <pre class="terminal-body"><code><span class="t-kw">import</span> numpy <span class="t-kw">as</span> np
 <span class="t-kw">from</span> truescout.sim <span class="t-kw">import</span> simulate_bracket, evaluate
 
-<span class="t-cmt"># Hierarchical Bayesian ratings — partial pooling</span>
-<span class="t-kw">with</span> pm.<span class="t-fn">Model</span>() <span class="t-kw">as</span> rating_model:
-    mu  <span class="t-op">=</span> pm.<span class="t-fn">Normal</span>(<span class="t-str">"mu_global"</span>, <span class="t-num">0</span>, <span class="t-num">1</span>)
-    sig <span class="t-op">=</span> pm.<span class="t-fn">HalfNormal</span>(<span class="t-str">"sigma_league"</span>, <span class="t-num">1</span>)
-    lx  <span class="t-op">=</span> pm.<span class="t-fn">Normal</span>(<span class="t-str">"league_offset"</span>, mu, sig,
-                    shape<span class="t-op">=</span>n_leagues)
-    idata <span class="t-op">=</span> pm.<span class="t-fn">sample</span>(<span class="t-num">1000</span>, tune<span class="t-op">=</span><span class="t-num">500</span>)
+<span class="t-cmt"># Hierarchical Bayesian ratings — partial pooling (NumPy, no PyMC)</span>
+<span class="t-kw">def</span> <span class="t-fn">sample_posterior</span>(mu_global, sigma_league, n_leagues):
+    lx <span class="t-op">=</span> np.random.<span class="t-fn">normal</span>(mu_global, sigma_league,
+                          size<span class="t-op">=</span>n_leagues)
+    <span class="t-kw">return</span> lx
 
 probs <span class="t-op">=</span> <span class="t-fn">simulate_bracket</span>(n<span class="t-op">=</span><span class="t-num">100_000</span>)
 brier <span class="t-op">=</span> <span class="t-fn">evaluate</span>(probs, outcomes)
-<span class="t-out">Brier: 0.214  ·  market baseline: 0.228</span></code></pre>
+<span class="t-out">Final: 24/32 correct · Brier: 0.202 · +19.2% vs. coin flip</span></code></pre>
       </div>
     </div>
   </div>

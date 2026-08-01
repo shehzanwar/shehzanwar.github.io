@@ -1,14 +1,15 @@
 ---
 title: Forecasting Football
 slug: premier-league-classification
-summary: Classification models to predict Premier League match outcomes — 54% accuracy (Lasso Regression) outperforming the 45% dummy baseline, with EDA-driven feature selection and 10-fold cross-validation.
-description: Evaluated multiple classification models on Premier League match data with EDA-driven feature selection and 10-fold cross-validation. Lasso Regression achieved 54% accuracy, outperforming the 45% baseline dummy model for match outcome prediction.
+summary: Leakage-safe Premier League match prediction, statistically indistinguishable from Bet365 closing odds (McNemar p = 0.488) using only pre-match features.
+description: Built a leakage-safe Premier League match outcome classifier using only information available before kickoff — Elo ratings with a home-field offset, rolling 5-match form, rest days, and rolling shot accuracy — validated with time-series cross-validation. The best model (Lasso, 54.1% accuracy) was statistically indistinguishable from Bet365 closing-line odds (McNemar's test, p = 0.488) while beating the baseline decisively (p < 0.001).
 category: Machine Learning
 stack:
   - Python
   - Classification
-  - EDA
-repoUrl: https://github.com/shehzanwar/CDA6740/tree/main/Project
+  - Time-Series CV
+  - PCA
+repoUrl: https://github.com/shehzanwar/premier-league-match-prediction
 featured: true
 order: 4
 coverIcon: lucide:trophy
@@ -18,12 +19,12 @@ status: shipped
 
 ## Overview
 
-Built a multi-class classification system to predict Premier League match outcomes (win, draw, loss) as part of ISYE 6740 (Computational Data Analysis) at Georgia Tech. The dataset contained multi-season match statistics including possession, shots on target, expected goals (xG), and defensive metrics.
+Built a multi-class classification system to predict Premier League match outcomes (win, draw, loss) as part of ISYE 6740 (Computational Data Analysis) at Georgia Tech. The design constraint was leakage safety: every feature had to be knowable before kickoff, which ruled out in-match statistics like possession or shots on target.
 
 ## Methodology
 
-Exploratory data analysis identified high-collinearity features that were pruned prior to modelling. Three classifiers were compared — Logistic Regression (with L2 regularization), Random Forest, and Gradient Boosting — each tuned via grid search and evaluated on a stratified holdout set. Class imbalance (fewer draws than wins/losses) was addressed through class-weight rebalancing.
+Twelve engineered features were used, all computed with a `.shift(1)` to prevent lookahead: Elo ratings with a +100 home-field offset, rolling 5-match form, rest days between fixtures, and rolling shot accuracy. Models (Lasso, Ridge, Random Forest, XGBoost) were evaluated with a 5-fold `TimeSeriesSplit` rather than a random or stratified holdout, since shuffling match order would leak future information into training folds. PCA and ISOMAP were used to explore the feature space, and calibration curves checked whether predicted probabilities matched observed outcome frequencies.
 
 ## Results
 
-Gradient Boosting achieved the highest accuracy at 62.4% on the holdout set. Draw prediction remained the hardest class across all models, consistent with published literature on football outcome prediction. The analysis confirmed that defensive metrics (goals conceded, xGA) were stronger predictors than attacking ones for away teams.
+Lasso was the best-performing model at 54.1% accuracy, ahead of XGBoost (49.2%) and a class-frequency dummy baseline (44.8%). The headline result is the comparison against the market: McNemar's test found no statistically significant difference between the model's predictions and Bet365 closing-line odds (p = 0.488) — matching a bookmaker's pricing using only 12 pre-match features, while beating the naive baseline with high confidence (p < 0.001). Draw prediction remained the hardest class across all models, consistent with published literature on football outcome prediction.

@@ -1,21 +1,23 @@
 ---
 // src/layouts/BaseLayout.astro
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import type { MetaOutput } from '../lib/seo';
 
 interface Props {
   meta: MetaOutput;
-  lang?: string;
+  lang?: string | undefined;
 }
 
 const { meta, lang = 'en' } = Astro.props;
 const canonical = meta.canonical ?? Astro.url.href;
-const ogImage   = meta.ogImage ?? new URL('/og-image.svg', Astro.site).href;
+const ogImage   = meta.ogImage ?? new URL('/og-image.png', Astro.site).href;
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Shehzad Anwar',
+  jobTitle: 'Machine Learning & Data Analyst',
   url: 'https://shehzanwar.github.io',
   sameAs: [
     'https://github.com/shehzanwar',
@@ -25,6 +27,18 @@ const jsonLd = {
     { '@type': 'CollegeOrUniversity', name: 'Georgia Institute of Technology' },
     { '@type': 'CollegeOrUniversity', name: 'Arizona State University' },
   ],
+  knowsAbout: [
+    'Bayesian Modeling',
+    'Statistical Learning',
+    'Machine Learning',
+    'Monte Carlo Simulation',
+    'Data Engineering',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressRegion: 'CA',
+    addressCountry: 'US',
+  },
 };
 ---
 
@@ -64,7 +78,7 @@ const jsonLd = {
     <meta name="twitter:image"       content={ogImage} />
 
     <!-- JSON-LD -->
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
     <!-- Favicons -->
     <link rel="icon"             type="image/svg+xml" href="/favicon.svg" />
@@ -74,8 +88,47 @@ const jsonLd = {
     <meta name="theme-color" content="#13131b" />
 
     <title>{meta.title}</title>
+    <ClientRouter />
   </head>
   <body>
     <slot />
+
+    <script>
+      // Spotlight card pointer tracking — sets --mx/--my consumed by .spotlight-card in global.css
+      document.addEventListener('pointermove', (e) => {
+        const target = e.target as HTMLElement;
+        const card = target.closest?.('.spotlight-card') as HTMLElement | null;
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+
+      // Scroll reveal — fade + rise on entry, respects prefers-reduced-motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function initScrollReveal() {
+        const targets = document.querySelectorAll<HTMLElement>('.reveal-on-scroll');
+        if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+        );
+        targets.forEach((el) => observer.observe(el));
+      }
+
+      initScrollReveal();
+      document.addEventListener('astro:page-load', initScrollReveal);
+    </script>
   </body>
 </html>

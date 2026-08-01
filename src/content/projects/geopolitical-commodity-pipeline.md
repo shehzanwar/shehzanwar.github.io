@@ -1,32 +1,45 @@
 ---
-title: Geopolitical Stress Commodity Pipeline
+title: Does Geopolitical Stress Move Commodity Prices?
 slug: geopolitical-stress-commodity-pipeline
-summary: Modular pipeline ingesting geopolitical stress indices and commodity price feeds, applying 1–30 day lag-correlation analysis to produce structured datasets for macroeconomic signal testing.
-description: Engineered a modular data processing pipeline to aggregate, clean, and analyze geopolitical event data against commodity market fluctuations, producing structured datasets for downstream analysis.
+summary: A 2018–2025 study testing whether geopolitical stress Granger-causes commodity volatility — 480 corrected hypothesis tests, zero significant results, and why that's the right answer.
+description: Built a composite Geopolitical Stress Index from GDELT/CAMEO-coded global events (2018–2025) and tested it against 20-day realized volatility in WTI crude, gold, and wheat using Granger causality with multiple-comparison correction across 480 hypothesis tests. The study found no statistically significant causal relationship — a designed null result consistent with market efficiency operating faster than daily event aggregation can capture.
 category: Data Engineering
 stack:
   - Python
-  - Data Engineering
+  - GDELT
+  - Granger Causality
   - Pandas
-  - API Integration
+  - Time-Series Analysis
 repoUrl: https://github.com/shehzanwar/geopolitical-stress-commodity-pipeline
 featured: true
-order: 2
+order: 3
 coverIcon: lucide:globe
 publishedAt: 2026-03-01
 status: shipped
 ---
 
-## Overview
+## Question
 
-Global commodity markets — crude oil, natural gas, agricultural goods — respond to geopolitical events in ways that are often opaque and lagged. This pipeline was built to make that signal systematic: ingest geopolitical stress data from public indices, align it temporally with commodity price series, and produce a clean, analysis-ready dataset that can be queried to test correlation hypotheses.
+Does rising geopolitical stress cause commodity markets to move — or do markets already price it in faster than daily data can measure? Global commodity markets — crude oil, gold, wheat — are widely assumed to respond to geopolitical shocks, but the claim is rarely tested rigorously. This project built the pipeline to test it properly, then reported what the data actually showed.
 
-## Engineering Approach
+## Design
 
-The pipeline is structured as a series of composable Python stages. The ingestion layer pulls geopolitical risk index data and commodity price feeds from public APIs, normalizing timestamps to UTC and standardising currency and unit representations across sources. A cleaning layer applies outlier detection and forward-fills short gaps in daily price series, preserving market-close conventions across exchanges in different time zones.
+Global political events from 2018–2025 were pulled from GDELT and coded using the CAMEO event taxonomy, then aggregated into a composite Geopolitical Stress Index. Commodity price series (WTI crude, gold, wheat) were converted to 20-day realized volatility, a standard measure of near-term market turbulence. Granger causality tests were run between the stress index and each commodity's volatility series across multiple lag windows and event categories, producing 480 individual hypothesis tests. Because running that many tests inflates the false-positive rate, results were corrected for multiple comparisons before any test was called significant.
 
-The transformation layer constructs lagged correlation features — measuring how commodity prices respond 1, 7, 14, and 30 days after significant geopolitical stress spikes — and outputs a Pandas DataFrame structured for both exploratory analysis and reproducible statistical testing. The entire pipeline is parameterized through a configuration file, making it straightforward to swap in new commodity tickers or geopolitical indices without touching core processing logic.
+## Result
 
-## Current Status
+**Zero of 480 tests survived correction.** No statistically significant Granger-causal relationship was found between the geopolitical stress index and commodity volatility at any lag tested.
 
-Active development. The ingestion and cleaning stages are stable; the transformation and analysis layers are in progress. Next steps include adding a persistence layer to write processed datasets to a local SQLite store and building a lightweight reporting notebook that visualizes the stress–price correlation matrices across commodity categories.
+## Why the Null Result Is the Right Answer
+
+A null result here is not a failed pipeline — it's evidence the methodology was applied correctly. Three things point to why zero is the honest outcome rather than a modeling failure:
+
+1. **Market efficiency operates faster than daily aggregation can capture.** If futures markets price in geopolitical risk within hours, a daily-resolution stress index will systematically miss the causal window.
+2. **Realized volatility is backward-looking.** It measures how much prices already moved, not investors' forward expectations — implied volatility would be a more direct test of anticipatory pricing.
+3. **A global stress index dilutes event-level signal.** Averaging across all geopolitical events worldwide likely washes out the effect of the specific events (say, a Strait of Hormuz incident) that actually move a specific commodity.
+
+Reporting a spurious positive from underpowered correction would have been the actual failure mode here — the discipline was in not doing that.
+
+## What's Next
+
+The natural follow-ups are the three points above, run as a next iteration: substitute implied volatility for realized volatility, filter events by geographic and sectoral relevance to each commodity rather than using a global average, and use event-study windows (days around a specific shock) instead of daily lag correlation.

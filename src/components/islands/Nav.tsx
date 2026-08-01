@@ -60,13 +60,19 @@ function PanelLink({ href, title, sub }: { href: string; title: string; sub?: st
   );
 }
 
-function ProjectsPanelContent() {
+interface NavProject {
+  slug: string;
+  title: string;
+  category: string;
+}
+
+function ProjectsPanelContent({ navProjects }: { navProjects: NavProject[] }) {
   return (
     <div style={{ padding: '1.25rem 1.5rem', width: 440, boxSizing: 'border-box' }}>
       <SectionLabel>Featured</SectionLabel>
-      <PanelLink href="/projects/truescout"                              title="TrueScout — World Cup 2026"      sub="Bayesian Ratings & Monte Carlo Simulation"    />
-      <PanelLink href="/projects/geopolitical-stress-commodity-pipeline" title="Geopolitical Stress Pipeline"    sub="Data Engineering & API Integration"          />
-      <PanelLink href="/projects/f1-prediction"                          title="Formula One: Statistical Learning" sub="Statistical Modeling & Telemetry"           />
+      {navProjects.map((p) => (
+        <PanelLink key={p.slug} href={`/projects/${p.slug}`} title={p.title} sub={p.category} />
+      ))}
       <div style={{ marginTop: '0.75rem', paddingLeft: '0.75rem' }}>
         <a href="/projects" style={{ fontSize: 'var(--text-sm)', fontWeight: 500, color: 'var(--color-accent)', textDecoration: 'none' }}>
           All projects <span aria-hidden="true">→</span>
@@ -75,10 +81,6 @@ function ProjectsPanelContent() {
     </div>
   );
 }
-
-const PANEL_CONTENT: Record<PanelKey, React.ReactNode> = {
-  Projects: <ProjectsPanelContent />,
-};
 
 // ─── Download icon ────────────────────────────────────────────────
 
@@ -115,7 +117,7 @@ function HamburgerIcon({ open }: { open: boolean }) {
 
 // ─── Nav component ────────────────────────────────────────────────
 
-export default function Nav() {
+export default function Nav({ navProjects }: { navProjects: NavProject[] }) {
   const [activeKey, setActiveKey] = useState<PanelKey | null>(null);
   const [isMobileOpen, setMobile] = useState(false);
   const [panelDims, setPanelDims] = useState<PanelDims>({ width: 0, height: 0 });
@@ -345,12 +347,12 @@ export default function Nav() {
                       transition: `opacity var(--duration-fast) var(--ease-out-expo)`,
                     }}
                   >
-                    {PANEL_CONTENT[key]}
+                    <ProjectsPanelContent navProjects={navProjects} />
                   </div>
                 ))}
                 {/* Sizing ghost */}
                 <div aria-hidden="true" style={{ visibility: 'hidden', pointerEvents: 'none' }}>
-                  {PANEL_CONTENT[PANEL_KEYS[0]]}
+                  <ProjectsPanelContent navProjects={navProjects} />
                 </div>
               </div>
             </div>
@@ -379,6 +381,7 @@ export default function Nav() {
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
+        inert={!isMobileOpen}
         style={{
           position: 'fixed',
           top: 0, right: 0, bottom: 0,
@@ -416,9 +419,9 @@ export default function Nav() {
           </SheetSection>
 
           <SheetSection label="Featured Projects">
-            <SheetLink href="/projects/truescout" onClick={closeMobile} size="sm">TrueScout — World Cup 2026</SheetLink>
-            <SheetLink href="/projects/geopolitical-stress-commodity-pipeline" onClick={closeMobile} size="sm">Geopolitical Stress Pipeline</SheetLink>
-            <SheetLink href="/projects/f1-prediction" onClick={closeMobile} size="sm">Formula One: Statistical Learning</SheetLink>
+            {navProjects.map((p) => (
+              <SheetLink key={p.slug} href={`/projects/${p.slug}`} onClick={closeMobile} size="sm">{p.title}</SheetLink>
+            ))}
           </SheetSection>
 
           <div style={{ marginTop: '0.5rem' }}>

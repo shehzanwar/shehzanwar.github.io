@@ -9,7 +9,7 @@ import { buildMeta } from '../lib/seo';
 const meta = buildMeta({
   title: 'About — Shehzad Anwar',
   description:
-    'Data and product analytics engineer based in the San Francisco Bay Area. MS Analytics candidate at Georgia Tech, specializing in statistical learning, machine learning, and data engineering.',
+    'Machine Learning & Data Analyst based in the San Francisco Bay Area. MS Analytics candidate at Georgia Tech, specializing in statistical learning, Bayesian modeling, and data engineering.',
 });
 
 const [experienceEntries, skillEntries] = await Promise.all([
@@ -30,27 +30,35 @@ const skills = skillEntries
     <section class="about-intro" aria-labelledby="about-heading">
       <h1 id="about-heading" class="about-heading">About</h1>
       <p class="about-lead">
-        I'm a data and product analytics engineer based in the San Francisco Bay Area,
+        I'm a Machine Learning &amp; Data Analyst based in the San Francisco Bay Area,
         pursuing a Master of Science in Analytics at Georgia Tech (expected 2027).
         I graduated cum laude from Arizona State University with a BS in Computer
-        Science, and I work at the intersection of statistical learning, data
-        engineering, and predictive modeling.
+        Science. U.S. Citizen — eligible for security clearance.
+      </p>
+      <p class="about-body">
+        My work centers on methods more than domains: leakage-safe validation
+        (time-series cross-validation, held-out calibration checks), Bayesian
+        hierarchical modeling for honest uncertainty estimates, multiple-hypothesis
+        correction when a study runs hundreds of tests, and self-scoring systems
+        that report a Brier score against a real baseline instead of a bare
+        accuracy number. I'd rather ship a well-corrected null result than a
+        flattering one that doesn't hold up.
       </p>
       <p class="about-body">
         I interned as a Data Analyst at Trinamix Inc., where I audited enterprise
         data integrity and used SQL to identify and remediate security
-        vulnerabilities. As a freelance developer at Yanbor LLC., I led technical
-        redesigns and engineered Python data processing tools that cut processing
-        times by 27%. My graduate coursework at Georgia Tech — Computational Data
-        Analysis (ISYE 6740) and Data Mining &amp; Statistical Learning (ISYE 7406)
-        — drives my applied work in classification, regression, and sports
-        analytics, including F1 lap-time prediction and Premier League match
-        forecasting.
+        vulnerabilities. As a Software Developer at Yanbor LLC., I led a technical
+        redesign and engineered a Python data processing tool that cut processing
+        times by 27% while preserving structural integrity for a legacy system.
+        My graduate coursework at Georgia Tech — Computational Data Analysis
+        (ISYE 6740) and Data Mining &amp; Statistical Learning (ISYE 7406) — underpins
+        applied projects spanning classification, regression, Bayesian rating
+        systems, and locally-run LLM inference for privacy-sensitive triage.
       </p>
     </section>
 
     <!-- Experience -->
-    <section class="about-section" aria-labelledby="experience-heading">
+    <section class="about-section reveal-on-scroll" aria-labelledby="experience-heading">
       <h2 id="experience-heading" class="section-title" style="margin-bottom: 2rem;">
         Experience
       </h2>
@@ -58,7 +66,7 @@ const skills = skillEntries
     </section>
 
     <!-- Skills -->
-    <section class="about-section" aria-labelledby="skills-heading">
+    <section class="about-section reveal-on-scroll" aria-labelledby="skills-heading">
       <h2 id="skills-heading" class="section-title" style="margin-bottom: 1.5rem;">
         Skills
       </h2>

@@ -18,11 +18,11 @@ const { colSpan = 4, rowSpan = 1, href, label, class: className } = Astro.props;
   style={`--col-span: ${colSpan}; --row-span: ${rowSpan};`}
 >
   {href ? (
-    <a href={href} aria-label={label} class="bento-inner">
+    <a href={href} aria-label={label} class="bento-inner spotlight-card">
       <slot />
     </a>
   ) : (
-    <div class="bento-inner" tabindex="0" role="article" aria-label={label}>
+    <div class="bento-inner spotlight-card">
       <slot />
     </div>
   )}
